@@ -376,31 +376,39 @@ function getEmergencyProcurementOffList() {
         }
     }
     page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getEmergencyProcurementOffList",          // url
-        data: JSON.stringify(page),
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                $('.loader').hide();
-                console.log(result)
-                //设置月度采购申请表数据
-                setPageClone(result);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            }
-            else {
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchEmOff();
+        $('.loader').hide();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getEmergencyProcurementOffList",          // url
+            data: JSON.stringify(page),
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    $('.loader').hide();
+                    console.log(result)
+                    //设置月度采购申请表数据
+                    setPageClone(result);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                }
+                else {
 
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-            alert("服务器异常！")
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
 
-        }
-    });
+            }
+        });
+    }
+
 
     //设置非物资类别下拉框
     $.ajax({
@@ -912,29 +920,144 @@ function setEmProcurementListModal(result) {
 
 //提交
 function submit(item) {
+    initSubmitFName(submitProcurementListById.name);
     if(confirm("确定提交?")) {
         //点击确定后操作
         var receiptNumber = $(item).parent().parent().children('td').eq(1).text();
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "setProcurementListSubmit",          // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {'receiptNumber': receiptNumber},
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    alert(result.message);
-                    window.location.reload();
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                alert("服务器异常!");
-            }
-        });
+        publicSubmit(receiptNumber,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
+        // $.ajax({
+        //     type: "POST",                       // 方法类型
+        //     url: "submitProcurementListById",          // url
+        //     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     dataType: "json",
+        //     data: {'receiptNumber': receiptNumber},
+        //     success: function (result) {
+        //         if (result != undefined && result.status == "success") {
+        //             alert(result.message);
+        //             // window.location.reload();
+        //         }
+        //         else {
+        //             alert(result.message);
+        //         }
+        //     },
+        //     error: function (result) {
+        //         alert("服务器异常!");
+        //     }
+        // });
     }
+}
+
+function submitProcurementListById(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "submitProcurementListById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'receiptNumber': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                // window.location.reload();
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常!");
+        }
+    });
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(submitProcurementListById.name);
+    initApprovalFName(approval1.name);
+    initBakcFName(back.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
+}
+
+//审批
+function approval1(id) {
+
+    //点击确定后操作
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "setProcurementListSubmit",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'receiptNumber': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                window.location.reload();
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常!");
+        }
+    });
+
+
+}
+
+/*驳回*/
+function back(id) {
+
+    //点击确定后操作
+
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "setProcurementListBack",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'receiptNumber': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                // alert(result.message);
+                // window.location.reload();
+            }
+            else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            alert("服务器异常!");
+        }
+    });
+
+
 }
 
 //作废
@@ -952,8 +1075,9 @@ function cancel(item) {
             //contentType: 'application/json;charset=utf-8',
             success:function (result) {
                 if (result != undefined && result.status == "success"){
-                    alert(result.message)
-                    window.location.reload()
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
             },
             error:function (result) {
@@ -1442,7 +1566,18 @@ function searchEmOff() {
 
 }
 
-
+//打印
+function print() {
+    //打印模态框
+    $("#footer").hide();
+    $("#appointModal2").printThis({
+        // debug: false,             // 调试模式下打印文本的渲染状态
+        // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        // importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        // copyTagClasses: true
+    });
+}
 
 
 

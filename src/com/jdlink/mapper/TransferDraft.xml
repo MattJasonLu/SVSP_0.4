@@ -151,9 +151,17 @@
     </update>
 
     <update id="setStateToExamine" parameterType="String">
-        UPDATE t_pr_transferdraft SET checkState='ToExamine', checkStateId=67 WHERE id=#{id};
+        UPDATE t_pr_transferdraft SET checkState='ToExamine', checkStateId=63 WHERE id=#{id};
     </update>
 
+    <!--审批-->
+    <update id="setStateToApproval" parameterType="String">
+        UPDATE t_pr_transferdraft SET  checkStateId=76 WHERE id=#{id};
+    </update>
+    <!--驳回-->
+    <update id="setStateToBack" parameterType="String">
+        UPDATE t_pr_transferdraft SET  checkStateId=66 WHERE id=#{id};
+    </update>
     <!--列出转移联单-->
     <select id="list" resultMap="TransferDraftRM">
         SELECT * FROM t_pr_transferdraft
@@ -175,6 +183,7 @@
                 and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
                 or transferTime like binary "%"#{keyword}"%" or produceCompanyName like "%"#{keyword}"%"
                 or transportCompanyName like "%"#{keyword}"%" or acceptCompanyName like "%"#{keyword}"%"
+                or transferId like "%"#{keyword}"%"
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
@@ -209,7 +218,9 @@
         <where>
             <if test="keyword != null and keyword != ''">
                 and id LIKE "%"#{keyword}"%" or dispatcher like "%"#{keyword}"%" or destination like "%"#{keyword}"%"
-                or transferTime like binary "%"#{keyword}"%"
+                or transferTime like binary "%"#{keyword}"%" or produceCompanyName like "%"#{keyword}"%"
+                or transportCompanyName like "%"#{keyword}"%" or acceptCompanyName like "%"#{keyword}"%"
+                or transferId like "%"#{keyword}"%"
             </if>
             <if test="id != null and id != ''">
                 and id LIKE "%"#{id}"%"
@@ -225,4 +236,6 @@
             </if>
         </where>
     </select>
+
+    <!---->
 </mapper>

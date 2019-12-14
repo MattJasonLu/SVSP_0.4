@@ -54,14 +54,15 @@
         </div><!--/.nav-collapse -->
     </div>
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li><a href="todo.html" title="事项">
+            <span class="glyphicon glyphicon-bell"></span>
+        </a>
+        </li>
+        <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
             <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
-                <li><a href="#">待办事项</a></li>
-                <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
@@ -112,7 +113,7 @@
                     <!--<a class="btn btn-primary btn-xs" onclick=""><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                     <a class="btn btn-primary btn-xs" id="function_-310" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e);}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     <a class="btn btn-primary btn-xs" id="function_-311" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; DeclareGeneration(e);}"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> 生成次生库存申报</a>
-                    <a class="btn btn-primary btn-xs" href="secondaryWastesSummary.html" onclick=""><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> 收发汇总表</a>
+                    <a class="btn btn-primary btn-xs" id="function_-593" href="secondaryWastesSummary.html" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span> 收发汇总表</a>
                 </div>
                 <!--<div class="input-group col-md-3">-->
                     <!--<input type="text" name="" id="input" value="" placeholder="请输入查询关键字" onkeyup="search1()"/>-->
@@ -208,18 +209,18 @@
                             <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                         </label>
                     </th>
-                    <th class="text-center">入库单号</th>
-                    <th class="text-center">入库日期</th>
-                    <th class="text-center">产废单位</th>
-                    <th class="text-center">仓库名称</th>
+                    <th class="text-center" onclick="sortTable(this,'')">入库单号</th>
+                    <th class="text-center" onclick="sortTable(this,'')">入库日期</th>
+                    <th class="text-center" onclick="sortTable(this,'')">产废单位</th>
+                    <th class="text-center" onclick="sortTable(this,'')">仓库名称</th>
                     <!--<th class="text-center">进料方式</th>-->
-                    <th class="text-center">危废名称</th>
-                    <th class="text-center">危废类型</th>
+                    <th class="text-center" onclick="sortTable(this,'')">危废名称</th>
+                    <th class="text-center" onclick="sortTable(this,'')">危废类型</th>
                     <!--<th class="text-center">数量</th>-->
                     <!--<th class="text-center">单价</th>-->
                     <!--<th class="text-center">总价</th>-->
-                    <th class="text-center">创建时间</th>
-                    <th class="text-center">入库数量</th>
+                    <th class="text-center" onclick="sortTable(this,'')">创建时间</th>
+                    <th class="text-center" onclick="sortTable(this,'')">入库数量</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>

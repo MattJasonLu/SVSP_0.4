@@ -303,30 +303,37 @@ function loadPageWayBillList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageWayBillList",          // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                setPageClone(result.data);
-                setPageCloneAfter(pageNumber);      // 大于5页时页码省略显示
-            } else {
-                console.log(result.message);
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchWayBill();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageWayBillList",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    setPageClone(result.data);
+                    setPageCloneAfter(pageNumber);      // 大于5页时页码省略显示
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
+        });
+        isSearch = false;
+    }
     // 设置高级检索的下拉框数据
     setSeniorSelectedList();
-    isSearch = false;
+
 }
 
 function setWayBillList(result) {
@@ -770,31 +777,12 @@ function editWayBill(item) {
  * 提交功能
  */
 function submit(item) {
+    initSubmitFName(submitWayBill.name);
     var state = $(item).parent().prev().text();
     var id = getWayBillId(item);
     if (state == '新建' || state == '已驳回') {
         if (confirm("确认提交？"))
-            $.ajax({
-                type: "POST",
-                url: "submitWayBill",
-                async: false,
-                data: {
-                    id: id
-                },
-                dataType: "json",
-                success: function (result) {
-                    if (result.status == "success") {
-                        alert("提交成功！");
-                        window.location.reload();
-                    } else {
-                        alert(result.message);
-                    }
-                },
-                error: function (result) {
-                    console.log(result);
-                    alert("服务器异常!");
-                }
-            });
+        publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
     } else if (state == '审批中') {
         alert("单据审批中，不可提交！");
     } else if (state == '已作废') {
@@ -802,6 +790,31 @@ function submit(item) {
     } else {
         alert("单据不可提交！");
     }
+}
+
+/*审批中*/
+function submitWayBill(id) {
+    $.ajax({
+        type: "POST",
+        url: "submitWayBill",
+        async: false,
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result.status == "success") {
+                // alert("提交成功！");
+                // window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常!");
+        }
+    });
 }
 
 /**
@@ -813,11 +826,11 @@ function examination(item) {
         alert("请提交后再进行审批操作！");
     } else {
         wayBillId = getWayBillId(item);
-        $('#examinationModal').modal('show');//手动触发模态框弹出
+        $('#approval').modal('show');//手动触发模态框弹出
     }
 }
 
-function approval() {
+function approvalNO() {
     $('#contractInfoForm2').modal('show');
     $("#passContent").val($("#advice").val());
 }
@@ -830,12 +843,12 @@ function reject() {
 /**
  * 审批通过
  * */
-function approval1() {
+function approval1(id) {
     console.log($("#advice").val());
     console.log($("#passContent").val());
     var advice = $("#passContent").val();
     var wayBill = {};
-    wayBill.id = wayBillId;
+    wayBill.id = id;
     wayBill.advice = advice;
     $.ajax({
         type: "POST",                            // 方法类型
@@ -867,10 +880,10 @@ function approval1() {
 /**
  * 审批驳回
  * */
-function reject1() {
+function reject1(id) {
     var advice = $("#backContent").val();
     var wayBill = {};
-    wayBill.id = wayBillId;
+    wayBill.id = id;
     wayBill.advice = advice;
     $.ajax({
         type: "POST",                            // 方法类型
@@ -884,8 +897,8 @@ function reject1() {
             if (result != undefined) {
                 var data = eval(result);
                 if (data.status == "success") {
-                    alert(data.message);
-                    window.location.reload();
+                    // alert(data.message);
+                    // window.location.reload();
                 } else {
                     alert(data.message);
                 }
@@ -918,7 +931,8 @@ function invalidWayBill(item) {
                 success: function (result) {
                     if (result.status == "success") {
                         alert("作废成功！");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     } else {
                         alert(result.message);
                     }
@@ -1994,4 +2008,61 @@ function autoSetAmountAndPrice(item) {
          amountInput.val((amount / 1000).toFixed(3));
          priceInput.val((price * 1000).toFixed(2));
      }
+}
+
+function toSubmitWayBill(id) {
+    $.ajax({
+        type: "POST",
+        url: "toSubmitWayBill",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'id': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(submitWayBill.name);
+    initApprovalFName(approval1.name);
+    initBakcFName(reject1.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
 }

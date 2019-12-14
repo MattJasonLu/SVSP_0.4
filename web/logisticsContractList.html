@@ -124,14 +124,15 @@
         </div><!--/.nav-collapse -->
     </div>
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li><a href="todo.html" title="事项">
+            <span class="glyphicon glyphicon-bell"></span>
+        </a>
+        </li>
+        <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
             <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
-                <li><a href="#">待办事项</a></li>
-                <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
@@ -301,10 +302,10 @@
                                         <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                                     </label>
                                 </th>
-                                <th class="text-center">合同编号</th>
-                                <th class="text-center" id="toggleName" style="width: 300px;">供应商名称</th><!--相当于公司名称-->
-                                <th class="text-center">合同名称</th>
-                                <th class="text-center">
+                                <th class="text-center" onclick="sortTable(this,'')">合同编号</th>
+                                <th class="text-center" onclick="sortTable(this,'')" id="toggleName" style="width: 300px;">供应商名称</th><!--相当于公司名称-->
+                                <th class="text-center" onclick="sortTable(this,'')">合同名称</th>
+                                <th class="text-center" onclick="sortTable(this,'')">
                                     <div class="form-inline">
                                         <label class="control-label">状态</label>
                                         <select class="form-control" id="state"  onchange="getstate(this)" style="height: 80%; font-size: x-small; display: none" >
@@ -319,13 +320,13 @@
                                 </th>
                                 <!--<th class="text-center" style="width: 200px">公司名称</th>-->
                                 <!--<th class="text-center">所属区域</th>-->
-                                <th class="text-center hidden">合约量</th>
-                                <th class="text-center">联系人</th>
-                                <th class="text-center">联系方式</th>
-                                <th class="text-center">签订日期</th>
-                                <th class="text-center">截止日期</th>
-                                <th class="text-center">小额合同</th>
-                                <th class="text-center">录入人</th>
+                                <th class="text-center hidden" onclick="sortTable(this,'')">合约量</th>
+                                <th class="text-center" onclick="sortTable(this,'')">联系人</th>
+                                <th class="text-center" onclick="sortTable(this,'')">联系方式</th>
+                                <th class="text-center" onclick="sortTable(this,'')">签订日期</th>
+                                <th class="text-center" onclick="sortTable(this,'')">截止日期</th>
+                                <th class="text-center" onclick="sortTable(this,'')">小额合同</th>
+                                <th class="text-center" onclick="sortTable(this,'')">录入人</th>
                                 <th class="text-center">操作</th>
                             </tr>
                             </thead>

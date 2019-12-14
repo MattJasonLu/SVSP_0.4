@@ -351,33 +351,39 @@ function loadPageMaterialList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchMa();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",
+            url: "getMaterialList",
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    var obj = result.array;
+                    //设置下拉框数据
+                    setPageClone(result)
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                    // setMaterialList(obj,n);
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
+            }
+        });
+        isSearch = false;
+        //加载高级查询的数据
+    }
 
-    $.ajax({
-        type: "POST",
-        url: "getMaterialList",
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result !== undefined && result.status === "success") {
-                console.log(result);
-                var obj = result.array;
-                //设置下拉框数据
-                setPageClone(result)
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-                // setMaterialList(obj,n);
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            alert("服务器异常！")
-        }
-    });
-    isSearch = false;
-    //加载高级查询的数据
 
     //物质形态
     $.ajax({
@@ -723,34 +729,34 @@ function selected2(item) {
 * 审批*/
 function approvalMa(item) {
 
+    //
+    // $.ajax({
+    //     type: "POST",
+    //     url: "getMaterialRequireByMaterialRequireId",                  // url
+    //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+    //     dataType: "json",
+    //     data: {'materialRequireId': $(item).parent().parent().children('td').eq(2).html()},
+    //     //contentType: "application/json; charset=utf-8",
+    //     success: function (result) {
+    //         if (result != undefined && result.status == "success") {
+    //             console.log(result);
+    //             //赋值配伍单号
+    //             $("#remarks").val(result.data.opinion);
+    //         }
+    //         else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         alert("服务器异常！")
+    //     }
+    //
+    // });
+    //
+    // $('#materialRequireId').text($(item).parent().parent().children('td').eq(2).html())
+    //
 
-    $.ajax({
-        type: "POST",
-        url: "getMaterialRequireByMaterialRequireId",                  // url
-        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data: {'materialRequireId': $(item).parent().parent().children('td').eq(2).html()},
-        //contentType: "application/json; charset=utf-8",
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                //赋值配伍单号
-                $("#remarks").val(result.data.opinion);
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            alert("服务器异常！")
-        }
-
-    });
-
-    $('#materialRequireId').text($(item).parent().parent().children('td').eq(2).html())
-
-
-    $('#contractInfoForm2').modal('show');
+    $('#approval2').modal('show');
 
 
 }
@@ -791,7 +797,7 @@ function back(item) {
 }
 
 //把按钮功能分出来做这个是审批
-function confirm2() {
+function confirm1(id) {
     var materialRequireId = $('#materialRequireId').text();
     var opinion = $('#remarks').val();
     $.ajax({
@@ -799,7 +805,7 @@ function confirm2() {
         url: "approvalMa",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'materialRequireId': materialRequireId, 'opinion': opinion,},
+        data: {'materialRequireId': id, 'opinion': opinion,},
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
@@ -819,7 +825,7 @@ function confirm2() {
 }
 
 //把按钮功能分出来做这个是驳回
-function back2() {
+function back1(id) {
 
     var materialRequireId = $('#materialRequireId2').text();
     var opinion = $('#remarks1').val();
@@ -828,12 +834,12 @@ function back2() {
         url: "backMa",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'materialRequireId': materialRequireId, 'opinion': opinion,},
+        data: {'materialRequireId': id, 'opinion': opinion,},
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                alert(result.message);
-                console.log(result);
-                window.location.reload();
+                // alert(result.message);
+                // console.log(result);
+                // window.location.reload();
             }
             else {
                 alert(result.message)
@@ -867,6 +873,7 @@ function getWeekDate() {
 
 /*提交功能*/
 function submitMa() {
+    initSubmitFName(submitByMrId.name);
     var items = $("input[name='select']:checked");//判断复选框是否选中
 
     if (items.length > 0) {
@@ -874,31 +881,14 @@ function submitMa() {
             $.each(items, function () {
                 if ($(this).parent().parent().next().next().html().length > 0) {
                     var materialRequireId = $(this).parent().parent().next().next().html();
-                    //提交方法
-                    $.ajax({
-                        type: "POST",
-                        url: "submitByMrId",
-                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                        dataType: "json",
-                        data: {'materialRequireId': materialRequireId},
-                        success: function (result) {
-                            if (result != undefined && result.status == "success") {
-                                console.log(result);
-                            }
-                            else {
-                                alert(result.message)
-                            }
-                        },
-                        error: function (result) {
-                            alert("服务器异常！")
-                        }
-                    });
+                    publicSubmit(materialRequireId,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
+
                 }
             })
 
 
         }
-        alert('提交成功!')
+        // alert('提交成功!')
         window.location.reload();
     }
     else {
@@ -907,7 +897,26 @@ function submitMa() {
 
 
 }
-
+function submitByMrId(id) {
+    $.ajax({
+        type: "POST",
+        url: "submitByMrId",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'materialRequireId': id},
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+            }
+            else {
+                alert(result.message)
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！")
+        }
+    });
+}
 /*作废*/
 function cancelMa(item) {
 
@@ -923,8 +932,9 @@ function cancelMa(item) {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     console.log(result);
-                    alert(result.message)
-                    window.location.reload();
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
                 else {
                     alert(result.message)
@@ -1276,6 +1286,7 @@ function adjust(item) {
 //修改页面初始化
 
 function adjustMater() {
+    loadNavigationList();   // 动态菜单加载
     var materialRequireId = localStorage['materialRequireId'];
 
     $("#materialRequireId").text(materialRequireId);
@@ -1674,6 +1685,41 @@ function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchMa();      //
     }
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(submitByMrId.name);
+    initApprovalFName(confirm1.name);
+    initBakcFName(back1.name);
+    var id=$(item).parent().parent().children("td").eq(2).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
 }
 
 

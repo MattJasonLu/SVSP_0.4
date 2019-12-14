@@ -2,6 +2,7 @@ package com.jdlink.mapper;
 
 import com.jdlink.domain.Page;
 import com.jdlink.domain.Warning;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,19 @@ public interface WarningMapper {
     int totalWarningRecord();
 
     int searchWaringCount(Warning warning);
+
+    void reStartWarning(int id);
+
+    List<Warning> getWarningDetailByAid(int id);
+
+    void deleteRoleListByAid(int id);
+
+    void deleteDetailByAid(int id);
+
+    void addRoleIdList(Warning warning);
+
+    void addDetailList(Warning warning);
+
+    int getCountByRoleIdAndAid(@Param("aId")int aId, @Param("roleId")int roleId);
+
 }

@@ -63,13 +63,15 @@
         </div><!--/.nav-collapse -->
     </div>
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li><a href="todo.html" title="事项">
+            <span class="glyphicon glyphicon-bell"></span>
+        </a>
+        </li>
+        <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
             <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
-                <li><a href="#">待办事项</a></li>
                 <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
@@ -180,14 +182,14 @@
                             </label>
                         </th>
                         <th class="text-center hidden">ID</th>
-                        <th class="text-center">受控文档编号</th>
-                        <th class="text-center">文档名称</th>
-                        <th class="text-center">系统关联代码</th>
-                        <th class="text-center">所属公司</th>
-                        <th class="text-center">创建人</th>
-                        <th class="text-center">创建日期</th>
-                        <th class="text-center">生效否</th>
-                        <th class="text-center">备注</th>
+                        <th class="text-center" onclick="sortTable(this,'')">受控文档编号</th>
+                        <th class="text-center" onclick="sortTable(this,'')">文档名称</th>
+                        <th class="text-center" onclick="sortTable(this,'')">系统关联代码</th>
+                        <th class="text-center" onclick="sortTable(this,'')">所属公司</th>
+                        <th class="text-center" onclick="sortTable(this,'')">创建人</th>
+                        <th class="text-center" onclick="sortTable(this,'')">创建日期</th>
+                        <th class="text-center" onclick="sortTable(this,'')">生效否</th>
+                        <th class="text-center" onclick="sortTable(this,'')">备注</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>

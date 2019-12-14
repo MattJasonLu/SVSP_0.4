@@ -53,6 +53,9 @@ public class UserServiceImpl implements UserService {
     public void deleteRoleById(int id) { userMapper.deleteRoleById(id);}
 
     @Override
+    public void deleteUserById(int id) { userMapper.deleteUserById(id);}
+
+    @Override
     public void update(User user) {
         userMapper.update(user);
     }
@@ -136,4 +139,18 @@ public class UserServiceImpl implements UserService {
         return (User) session.getAttribute("user");
     }
 
+    @Override
+    public List<User> getUserListByRoleId(int roleId) {
+        return userMapper.getUserListByRoleId(roleId);
+    }
+
+    @Override
+    public User getCompanyEmail() {
+        return userMapper.getCompanyEmail();
+    }
+
+    @Override
+    public void updateCompanyEmail(User user) {
+        userMapper.updateCompanyEmail(user);
+    }
 }

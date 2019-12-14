@@ -383,7 +383,9 @@ function modifyData() {
             if (result != undefined && result.status == "success") {
                 console.log(result);
                 alert(result.message);
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#editModal").modal("hide");
             } else {
                 console.log(result);
             }
@@ -677,28 +679,35 @@ function loadPageList() {
     page.start = (pageNumber - 1) * page.count;
     var data1 = {};
     data1.page = page;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "listSecondInboundOrder",   // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(data1),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result !== undefined && result.status === "success") {
-                console.log(result);
-                setPageClone(result.data);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            } else {
-                console.log("fail: " + result);
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchData();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "listSecondInboundOrder",   // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(data1),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    setPageClone(result.data);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
-    isSearch = false;
+        });
+        isSearch = false;
+    }
+
     getSelectedInfo();
 }
 
@@ -981,7 +990,8 @@ function setInvalid(e) {    //已作废
                 if (result !== undefined && result.status === "success") {
                     console.log(result);
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -993,34 +1003,67 @@ function setInvalid(e) {    //已作废
     }
 }
 
+/*审批方法*/
+/*驳回方法*/
+
+
+
+/**
+ * 提交
+ * @param e
+ */
 function setSubmit(e) {
+    initSubmitFName(setInboundOrderStateSubmit.name);
     var r = confirm("确认提交该入库单吗？");
     if (r) {
         var id = getIdByMenu(e);
-        $.ajax({
-            type: "POST",
-            url: "setInboundOrderStateSubmit",
-            async: false,
-            dataType: "json",
-            data: {
-                inboundOrderId: id
-            },
-            success: function (result) {
-                if (result !== undefined && result.status === "success") {
-                    console.log(result);
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });
+        publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
+        // $.ajax({
+        //     type: "POST",
+        //     url: "setInboundOrderStateSubmit",
+        //     async: false,
+        //     dataType: "json",
+        //     data: {
+        //         inboundOrderId: id
+        //     },
+        //     success: function (result) {
+        //         if (result !== undefined && result.status === "success") {
+        //             console.log(result);
+        //             alert(result.message);
+        //             window.location.reload();
+        //         } else {
+        //             alert(result.message);
+        //         }
+        //     },
+        //     error: function (result) {
+        //         console.log(result);
+        //     }
+        // });
     }
 }
-
+function setInboundOrderStateSubmit(id) {
+    $.ajax({
+        type: "POST",
+        url: "setInboundOrderStateSubmit",
+        async: false,
+        dataType: "json",
+        data: {
+            inboundOrderId: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
 /**
  * 查看数据
  * @param e
@@ -1456,3 +1499,82 @@ $(window).on('load', function () {
         dropupAuto:false
     });
 });
+
+function setInboundOrderStateApproval(id) {
+    $.ajax({
+        type: "POST",
+        url: "setInboundOrderStateApproval",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+               alert(result.message)
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+function setInboundOrderStateBack(id) {
+    $.ajax({
+        type: "POST",
+        url: "setInboundOrderStateBack",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                // alert(result.message)
+            } else {
+                console.log(result);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(setInboundOrderStateSubmit.name);
+    initApprovalFName(setInboundOrderStateApproval.name);
+    initBakcFName(setInboundOrderStateBack.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
+}

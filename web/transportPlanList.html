@@ -125,14 +125,15 @@
         </div><!--/.nav-collapse -->
     </div>
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li><a href="todo.html" title="事项">
+            <span class="glyphicon glyphicon-bell"></span>
+        </a>
+        </li>
+        <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
             <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
-                <li><a href="#">待办事项</a></li>
-                <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
@@ -254,10 +255,10 @@
                             <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                         </label>
                     </th>
-                    <th class="text-center">运输计划单编号</th>
-                    <th class="text-center">创建时间</th>
-                    <th class="text-center">创建人</th>
-                    <th class="text-center">状态</th>
+                    <th class="text-center" onclick="sortTable(this,'')">运输计划单编号</th>
+                    <th class="text-center" onclick="sortTable(this,'')">创建时间</th>
+                    <th class="text-center" onclick="sortTable(this,'')">创建人</th>
+                    <th class="text-center" onclick="sortTable(this,'')">状态</th>
                     <th class="text-center">操作</th>
                 </tr>
                 </thead>
@@ -283,8 +284,8 @@
                                 class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                         <a href="#" id="function_-147" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setInvalid(e);}" title="作废"><span
                                 class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
-                        <a href="#" id="function_-148" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setExamined(e);}" title="审批"><span
-                                class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>
+                        <a href="#" id="function_-148" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span
+                                class="glyphicon glyphicon glyphicon-import" aria-hidden="true"></span></a>
                         <a href="#" id="function_-149" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; generateWayBill(e);}" title="生成接运单"><span
                                 class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span></a>
                     </td>
@@ -329,6 +330,69 @@
                 </li>
             </ol>
         </nav>
+    </div>
+</div>
+<!--审批模态框-->
+<div class="modal fade bs-example-modal-lg" id="approval" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 70%">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h2>单据信息</h2>
+                <span class="hidden" id="ApprovalOrderId"></span>
+            </div>
+            <div class="modal-body">
+                <button type="button" class="btn btn-primary" onclick="viewInfo()">信息查看</button>
+                <hr>
+                <h3>审批轨迹</h3>
+                <table class="table table-hover table-condensed" id="approvalTable">
+                    <tr>
+                        <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                        <td style="width: 80%;padding: 10px">
+                            <p class="time" style="color: #8ec9ff;">2019年03月06日 16时04分星期三</p>
+                            <h3>发起人：<span>寇斯丁胡</span></h3>
+                            <b>审批意见:</b>
+                            <br>
+                            <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                        <td style="width: 80%;padding: 10px">
+                            <p class="time" style="color: #8ec9ff;">2019年03月07日 16时04分星期四</p>
+                            <h3>发起人：<span>阿斯打算</span></h3>
+                            <b>审批意见:</b>
+                            <br>
+                            <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                        <td style="width: 80%;padding: 10px">
+                            <p class="time" style="color: #8ec9ff;">2019年03月08日 16时04分星期五</p>
+                            <h3>发起人：<span>范德萨的</span></h3>
+                            <b>审批意见:</b>
+                            <br>
+                            <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                        <td style="width: 80%;padding: 10px">
+                            <p class="time" style="color: #8ec9ff;">2019年03月09日 16时04分星期六</p>
+                            <h3>发起人：<span>玩儿未人</span></h3>
+                            <b>审批意见:</b>
+                            <br>
+                            <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="approval1" onclick="ApprovalModal()">审批</button>
+                <button type="button" class="btn btn-danger" id="disapproval" onclick="ApprovalBack()">驳回</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
     </div>
 </div>
 <!--查看模态框-->
@@ -469,6 +533,54 @@
             <div class="modal-footer center">
                 <button type="button" class="btn btn-default" onclick="downloadModal()">下载模板</button>
                 <button type="button" class="btn btn-primary" onclick="importExcel()">导入数据</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="publicApproval" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="sub-header text-center">审批意见</h5>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <textarea class="form-control" rows="5" id="advice" style="min-width: 70%"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirmApproval()">
+                    确认审批
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="backApproval" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="sub-header text-center">驳回意见</h5>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label for="search-contactName" class="col-sm-2 control-label">驳回层级</label>
+                    <div class="col-xs-4">
+                        <input type="radio"  name="backLevel" placeholder="" value=1 checked="checked">发起人
+                        <input type="radio"  name="backLevel" placeholder=""   value=0>上一级
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-horizontal col-md-12">
+                    <textarea class="form-control" rows="5" id="backContent" style="width: 100%"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="confirmBack()">确认驳回
+                </button>
             </div>
         </div>
     </div>

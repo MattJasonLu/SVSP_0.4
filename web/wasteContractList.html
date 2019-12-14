@@ -126,14 +126,15 @@
         </div><!--/.nav-collapse -->
     </div>
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li><a href="todo.html" title="事项">
+            <span class="glyphicon glyphicon-bell"></span>
+        </a>
+        </li>
+        <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
             <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
-                <li><a href="#">待办事项</a></li>
-                <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
@@ -176,13 +177,13 @@
             <div>
                 <!--操作按钮-->
                 <div class="pull-left col-md-6 boo">
-                    <a class="btn btn-primary btn-xs" id="function_-88"  onclick="addContract()" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" id="function_-89" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; contractSubmit(e)}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>
+                    <a class="btn btn-primary btn-xs" id="function_-732"  onclick="addContract()" ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                    <a class="btn btn-primary btn-xs" id="function_-566" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; contractSubmit(e)}"><span class="glyphicon glyphicon-export" aria-hidden="true"></span> 提交</a>
                     <!--<a class="btn btn-primary btn-xs" id="function_141" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcel(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>-->
                     <!--<a class="btn btn-primary btn-xs" id="function_142" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(contractIndex)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>-->
-                    <a class="btn btn-primary btn-xs" id="function_-90" href="emergencyContractInfo.html" onclick="checkAuthority($(this))"> 应急处置意向书</a>
-                    <a class="btn btn-primary btn-xs" id="function_-91" href="wastesContractList.html" onclick="checkAuthority($(this))"> 危废处置意向书</a>
-                    <a class="btn btn-primary btn-xs" id="function_-92" href="contractVolume.html" onclick="checkAuthority($(this))"> 合约量统计</a>
+                    <a class="btn btn-primary btn-xs" id="function_-733" href="emergencyContractInfo.html" onclick="checkAuthority($(this))"> 应急处置意向书</a>
+                    <a class="btn btn-primary btn-xs" id="function_-734" href="wastesContractList.html" onclick="checkAuthority($(this))"> 危废处置意向书</a>
+                    <a class="btn btn-primary btn-xs" id="function_-735" href="contractVolume.html" onclick="checkAuthority($(this))"> 合约量统计</a>
                 </div>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
@@ -285,16 +286,16 @@
                                         <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect();">
                                     </label>
                                 </th>
-                                <th class="text-center">合同编号</th>
-                                <th class="text-center" id="toggleName" style="width: 300px;">单位名称</th><!--相当于公司名称-->
-                                <th class="text-center">合同名称</th>
-                                <th class="text-center">联系人</th>
-                                <th class="text-center">联系方式</th>
-                                <th class="text-center">签订日期</th>
-                                <th class="text-center">截止日期</th>
-                                <th class="text-center">小额合同</th>
-                                <th class="text-center">录入人</th>
-                                <th class="text-center">状态</th>
+                                <th class="text-center" onclick="sortTable(this,'')">合同编号</th>
+                                <th class="text-center" onclick="sortTable(this,'')" id="toggleName" style="width: 300px;">单位名称</th><!--相当于公司名称-->
+                                <th class="text-center" onclick="sortTable(this,'')">合同名称</th>
+                                <th class="text-center" onclick="sortTable(this,'')">联系人</th>
+                                <th class="text-center" onclick="sortTable(this,'')">联系方式</th>
+                                <th class="text-center" onclick="sortTable(this,'')">签订日期</th>
+                                <th class="text-center" onclick="sortTable(this,'')">截止日期</th>
+                                <th class="text-center" onclick="sortTable(this,'')">小额合同</th>
+                                <th class="text-center" onclick="sortTable(this,'')">录入人</th>
+                                <th class="text-center" onclick="sortTable(this,'')">状态</th>
                                 <th class="text-center">操作</th>
                             </tr>
                             </thead>
@@ -316,11 +317,12 @@
                                 <td class="text-center"></td>
                                 <td class="text-center "></td>
                                 <td class="text-center">
-                                    <a href="#" id="function_-93" onclick=" check(this); function check(e){if(!checkAuthority($(e))) return false; viewContract(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                    <a href="#" id="function_-94" onclick=" check(this); function check(e){if(!checkAuthority($(e))) return false; adjust(e);}" title="变更"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                                    <a href="#" id="function_-95" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
-                                    <a href="#" id="function_-96" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
-                                    <a href="#"  onclick="signed(this)" title="签订合同"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span></a>
+                                    <a href="#" id="function_-736" onclick=" check(this); function check(e){if(!checkAuthority($(e))) return false; viewContract(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                    <a href="#" id="function_-737" onclick=" check(this); function check(e){if(!checkAuthority($(e))) return false; adjust(e);}" title="变更"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                    <a href="#" id="function_-738" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; cancel(e);}" class="glyphicon3" title="作废"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true" id="glyphicon3"></span></a>
+                                    <a href="#" id="function_-739" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="审批"><span class="glyphicon glyphicon-import" aria-hidden="true"></span></a>
+                                    <!--<a href="#" id="function_-566" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; approval(e);}" title="提交"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>-->
+                                    <a href="#" id="function_-740"  onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; signed(e);}" title="签订合同"><span class="glyphicon glyphicon-saved" aria-hidden="true"></span></a>
                                 </td>
                             </tr>
                                <!--
@@ -375,6 +377,69 @@
     <div class="dot"></div>
     <div class="dot"></div>
     <div class="dot"></div>
+</div>
+<!--审批模态框-->
+<div class="modal fade bs-example-modal-lg" id="approval" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document" style="width: 70%">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h2>单据信息</h2>
+                <span class="hidden" id="ApprovalOrderId"></span>
+            </div>
+            <div class="modal-body">
+                <button type="button" class="btn btn-primary" onclick="viewInfo()">信息查看</button>
+                <hr>
+                <h3>审批轨迹</h3>
+                <table class="table table-hover table-condensed" id="approvalTable">
+                    <tr>
+                        <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                        <td style="width: 80%;padding: 10px">
+                            <p class="time" style="color: #8ec9ff;">2019年03月06日 16时04分星期三</p>
+                            <h3>发起人：<span>寇斯丁胡</span></h3>
+                            <b>审批意见:</b>
+                            <br>
+                            <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                        <td style="width: 80%;padding: 10px">
+                            <p class="time" style="color: #8ec9ff;">2019年03月07日 16时04分星期四</p>
+                            <h3>发起人：<span>阿斯打算</span></h3>
+                            <b>审批意见:</b>
+                            <br>
+                            <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                        <td style="width: 80%;padding: 10px">
+                            <p class="time" style="color: #8ec9ff;">2019年03月08日 16时04分星期五</p>
+                            <h3>发起人：<span>范德萨的</span></h3>
+                            <b>审批意见:</b>
+                            <br>
+                            <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" style="width: 20%"><span class="glyphicon glyphicon-arrow-down"></span></td>
+                        <td style="width: 80%;padding: 10px">
+                            <p class="time" style="color: #8ec9ff;">2019年03月09日 16时04分星期六</p>
+                            <h3>发起人：<span>玩儿未人</span></h3>
+                            <b>审批意见:</b>
+                            <br>
+                            <span style="display: inline-block;width: 80%">审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过审批通过</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="approval1" onclick="ApprovalModal()">审批</button>
+                <button type="button" class="btn btn-danger" id="disapproval" onclick="ApprovalBack()">驳回</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
 </div>
 <!--查看页面-->
 <div class="modal fade bs-example-modal-lg" id="contractInfoForm" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
@@ -516,7 +581,7 @@
     </div>
 </div>
 <!--审批页面-->
-<div class="modal fade" id="contractInfoForm2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade" id="publicApproval" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -529,7 +594,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirm1()">
+                <button type="button" class="btn btn-primary" id="confirm" data-dismiss="modal" onclick="confirmApproval()">
                     确认审批
                 </button>
             </div>
@@ -538,20 +603,29 @@
 </div>
 <input type="file" name="excelPath" id="idExcel" style="display:none">
 <!--驳回页面-->
-<div class="modal fade" id="contractInfoForm3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+<div class="modal fade" id="backApproval" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="sub-header text-center">驳回意见</h5>
             </div>
             <div class="row">
+                <div class="form-group">
+                    <label for="search-contactName" class="col-sm-2 control-label">驳回层级</label>
+                    <div class="col-xs-4">
+                        <input type="radio"  name="backLevel" placeholder="" value=1 checked="checked">发起人
+                        <input type="radio"  name="backLevel" placeholder=""   value=0>上一级
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="form-horizontal col-md-12">
-                    <textarea class="form-control" rows="5" id="backContent" style="min-width: 70%"></textarea>
+                    <textarea class="form-control" rows="5" id="backContent" style="width: 100%"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="back1()">确认驳回
+                <button type="button" class="btn btn-primary" id="back1" data-dismiss="modal" onclick="confirmBack()">确认驳回
                 </button>
             </div>
         </div>

@@ -522,32 +522,42 @@ function getList1() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",
-        url: "getList1",
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result !== undefined && result.status === "success") {
-                console.log(result);
-                setPageClone(result);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
+
+      if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()))
+        searchPw();
+        window.localStorage.removeItem('approvalId');
+    }
+
+      else {
+        $.ajax({
+            type: "POST",
+            url: "getList1",
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    setPageClone(result);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常！")
             }
-            else {
-                alert(result.message);
-            }
-        },
-        error: function (result) {
-            alert("服务器异常！")
-        }
-    });
-    // 设置高级检索的下拉框数据
-    setPwList();
-    isSearch = false;
+        });
+        // 设置高级检索的下拉框数据
+        setPwList();
+        isSearch = false;
+    }
 
 
+    getCurrentUserData();
 }
 
 /*加载表格数据
@@ -719,7 +729,7 @@ function back(item) {
 }
 
 //把按钮功能分出来做这个是审批
-function confirm1() {
+function confirm1(id) {
     opinion = $('#advice').val();
     //console.log(opinion);
     //1获取文本框的值
@@ -728,12 +738,12 @@ function confirm1() {
         url: "approvalPw",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'pwId': pwId, 'opinion': opinion,},
+        data: {'pwId': id, 'opinion': opinion,},
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                alert(result.message);
+                // alert(result.message);
                 console.log(result);
-                window.location.reload();
+                // window.location.reload();
             }
             else {
                 alert(result.message)
@@ -746,7 +756,7 @@ function confirm1() {
 }
 
 //把按钮功能分出来做这个是驳回
-function back1() {
+function back1(id) {
     var compatibilityId = $('#compatibilityId3').text();
     var opinion = $('#backContent').val();
     $.ajax({
@@ -754,12 +764,12 @@ function back1() {
         url: "backPw",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'compatibilityId': compatibilityId, "opinion": opinion},
+        data: {'compatibilityId': id, "opinion": opinion},
         //contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                alert(result.message);
-                window.location.reload();
+                // alert(result.message);
+                // window.location.reload();
             }
             else {
                 alert(result.message);
@@ -798,7 +808,8 @@ function cancelPw(item) {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
                 else {
                     alert(result.message);
@@ -818,52 +829,60 @@ function cancelPw(item) {
  * 提交方法
  */
 function submit(item) {
-    var compatibilityId = $(item).parent().parent().children('td').eq(2).text();
-    if (confirm("确认提交?")) {
-        $.ajax({
-            type: "POST",
-            url: "submitPw",                  // url
-            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data: {'compatibilityId': compatibilityId},
-            //contentType: "application/json; charset=utf-8",
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    alert(result.message);
-                    window.location.reload();
-                }
-                else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                alert("服务器异常！")
-            }
-
-        });
+    initSubmitFName(submitPw.name);
+  var state= $(item).parent().parent().children('td').eq(13).text();//订单号
+    if(state=='待提交'||state=='已驳回'){
+        if (confirm("确认提交?")) {
+            var compatibilityId = $(item).parent().parent().children('td').eq(2).text();//订单号
+            //用户角色ID
+            var user=getCurrentUserData();
+            console.log(user);
+            var url=getUrl();
+            publicSubmit(compatibilityId,url,user.name,user.role.id)
+            // $.ajax({
+            //     type: "POST",
+            //     url: "submitPw",                  // url
+            //     async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            //     dataType: "json",
+            //     data: {'compatibilityId': compatibilityId},
+            //     //contentType: "application/json; charset=utf-8",
+            //     success: function (result) {
+            //         if (result != undefined && result.status == "success") {
+            //             // alert(result.message);
+            //             // window.location.reload();
+            //         }
+            //         else {
+            //             alert(result.message);
+            //         }
+            //     },
+            //     error: function (result) {
+            //         alert("服务器异常！")
+            //     }
+            //
+            // });
+        }
     }
+
+    // if(state=='待提交'){
+    // }
+    // else {
+    //     alert('仅待提交状态时提交')
+    // }
 
 }
 
-/**
- * 审批方法
- */
-function approval(item) {
-    var compatibilityId = $(item).parent().parent().children('td').eq(2).text();
-
+function submitPw(compatibilityId) {
     $.ajax({
         type: "POST",
-        url: "getByCompatibilityId",                  // url
+        url: "submitPw",                  // url
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
         data: {'compatibilityId': compatibilityId},
         //contentType: "application/json; charset=utf-8",
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                console.log(result);
-                //赋值配伍单号
-                $("#remarks").val(result.data.approvalContent);
-                $('#compatibilityId').text(result.data.compatibilityId)
+                // alert(result.message);
+                // window.location.reload();
             }
             else {
                 alert(result.message);
@@ -874,9 +893,6 @@ function approval(item) {
         }
 
     });
-
-
-    $('#contractInfoForm2').modal('show');
 }
 
 //把按钮功能分出来做这个是审批
@@ -1108,7 +1124,9 @@ function view1(item) {
     });
 
 
-    $('#appointModal2').modal('show');
+        $('#appointModal2').modal('show');
+
+
 }
 
 //设置配伍明细模态框
@@ -1313,7 +1331,7 @@ function adjust(item) {
 
 //修改页面初始化
 function adjustCom() {
-
+    loadNavigationList();   // 动态菜单加载
     var compatibilityId = localStorage['compatibilityId'];
 
     $("#compatibilityId2").text(compatibilityId);
@@ -2287,6 +2305,41 @@ function searchData() {
         $('#tbody1').append((array1[i]));
     }
 
+
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(submitPw.name);
+    initApprovalFName(confirm1.name);
+    initBakcFName(back1.name);
+    var id=$(item).parent().parent().children("td").eq(2).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
 
 }
 

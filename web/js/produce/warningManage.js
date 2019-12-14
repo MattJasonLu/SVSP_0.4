@@ -156,14 +156,14 @@ function switchPage(pageNumber) {
     if (!isSearch) {
         $.ajax({
             type: "POST",                       // 方法类型
-            url: "getList1",         // url
+            url: "loadWarningList",         // url
             async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(page),
             dataType: "json",
             contentType: 'application/json;charset=utf-8',
             success: function (result) {
                 if (result != undefined) {
-                    setCompatibility(result);
+                    setWarning(result);
                 } else {
                     console.log("fail: " + result);
                 }
@@ -177,15 +177,14 @@ function switchPage(pageNumber) {
         data1['page'] = page;
         $.ajax({
             type: "POST",                            // 方法类型
-            url: "loadWarningList",                 // url
+            url: "searchWaring",                 // url
             async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
             data: JSON.stringify(data1),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (result) {
                 if (result != undefined && result.status == "success") {
-                    console.log(result)
-                    setCompatibility(result)
+                    setWarning(result);
                 } else {
                     alert(result.message);
 
@@ -263,24 +262,21 @@ function inputSwitchPage() {
             data1['page'] = page;
             $.ajax({
                 type: "POST",                       // 方法类型
-                url: "searchWaringCount",                  // url
+                url: "searchWaring",                  // url
                 async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
                 data: JSON.stringify(data1),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (result) {
-                    // console.log(result);
-                    if (result > 0) {
-                        totalRecord = result;
-                        console.log("总记录数为:" + result);
+                    if (result != undefined) {
+                        console.log(result);
+                        setWarning(result);
                     } else {
                         console.log("fail: " + result);
-                        totalRecord = 0;
                     }
                 },
                 error: function (result) {
                     console.log("error: " + result);
-                    totalRecord = 0;
                 }
             });
         }
@@ -370,35 +366,36 @@ function setWarning(result) {
         clonedTr.show();
 
         clonedTr.children("td").each(function (inner_index) {
-
             // 根据索引为部分td赋值
             switch (inner_index) {
                 // 序号
                 case (0):
                     $(this).html(index + 1);
                     break;
-
                 //名称
                 case (1):
                     $(this).html(data.warningName);
                     break;
-
                 // 阈值
                 case (2):
                     $(this).html(data.warningThreshold);
                     break;
-
                 //单位
                 case (3):
                     $(this).html(data.warningUnit);
                     break;
-
-                    //编号
+                //编号
                 case (4):
                     $(this).html(data.id);
                     break;
-
-
+                //状态
+                case (5):
+                    if (data.useable === 1) {
+                        $(this).html('启用中');
+                    } else {
+                        $(this).html('已失效');
+                    }
+                    break;
             }
             clonedTr.removeAttr("id");
             clonedTr.insertBefore(tr);
@@ -407,11 +404,10 @@ function setWarning(result) {
         // 隐藏无数据的tr
 
 
-
-
     });
     tr.hide();
 }
+
 /**
  * 新增
  */
@@ -421,7 +417,7 @@ function addNewLine(item) {
     var tr = $(item).parent().parent().prev();
 
     //获取前一个行的序号,然后+1
-    var id=$('.myclass').length+1;
+    var id = $('.myclass').length + 1;
 
     // 克隆tr，每次遍历都可以产生新的tr
     var clonedTr = tr.clone();
@@ -434,10 +430,9 @@ function addNewLine(item) {
 
     clonedTr.children('td').eq(0).find("a").remove();
     clonedTr.children('td').eq(0).html(id);
-    if(id!=1){
+    if (id != 1) {
         clonedTr.children('td').eq(0).append(delBtn)
     }
-
 
 
     clonedTr.insertAfter(tr);
@@ -467,31 +462,27 @@ function delLine(item) {
  * 编辑按钮
  */
 function edit() {
-
     $("#btn").show();
-
     $('#plusBtn').show();
-
-
     var tr = $('#clonedTr');
-    var input1="<input type='text' class='form-control'>" ;
-    var input2="<input  type='number'  class='form-control' style='width: 100%;height: 100%'/>" ;
-    var input3=" <input type='text' class='form-control'>";
+    var input1 = "<input type='text' class='form-control'>";
+    var input2 = "<input  type='number'  class='form-control' style='width: 100%;height: 100%'/>";
+    var input3 = " <input type='text' class='form-control'>";
     tr.children('td').eq(1).html(input1);
     tr.children('td').eq(2).html(input2);
     tr.children('td').eq(3).html(input3);
 
-    if($('.myclass').length==0){
+    if ($('.myclass').length == 0) {
 
         var tr = $('#clonedTr');
-        var cloneTr=tr.clone();
-        cloneTr.attr('class','myclass');
+        var cloneTr = tr.clone();
+        cloneTr.attr('class', 'myclass');
         cloneTr.removeAttr("id")
         cloneTr.children('td').eq(0).html(1);
 
-        var input1="<input type='text' class='form-control'>" ;
-        var input2="<input  type='number'  class='form-control' style='width: 100%;height: 100%'/>" ;
-        var input3=" <input type='text' class='form-control'>";
+        var input1 = "<input type='text' class='form-control'>";
+        var input2 = "<input  type='number'  class='form-control' style='width: 100%;height: 100%'/>";
+        var input3 = " <input type='text' class='form-control'>";
         cloneTr.children('td').eq(1).html(input1);
         cloneTr.children('td').eq(2).html(input2);
         cloneTr.children('td').eq(3).html(input3);
@@ -503,44 +494,38 @@ function edit() {
     }
 
 
-
     $('.myclass').each(function () {
         $(this).children('td').eq(0).find('a').show();
-        if($(this).children('td').eq(1).children('input').length<=0){
-            var value1=$(this).children('td').eq(1).html();
-            var input1="<input type='text' class='form-control' value="+ value1+">";
+        if ($(this).children('td').eq(1).children('input').length <= 0) {
+            var value1 = $(this).children('td').eq(1).html();
+            var input1 = "<input type='text' class='form-control' value=" + value1 + ">";
             $(this).children('td').eq(1).html(input1)
         }
 
-        if($(this).children('td').eq(2).children('input').length<=0){
-            var value2=$(this).children('td').eq(2).html();
-            var input2="<input  type='number'  class='form-control' style='width: 100%;height: 100%' value="+ value2+">" ;
+        if ($(this).children('td').eq(2).children('input').length <= 0) {
+            var value2 = $(this).children('td').eq(2).html();
+            var input2 = "<input  type='number'  class='form-control' style='width: 100%;height: 100%' value=" + value2 + ">";
             $(this).children('td').eq(2).html(input2)
         }
 
-        if($(this).children('td').eq(3).children('input').length<=0){
-            var value3=$(this).children('td').eq(3).html();
-            var input3="<input type='text' class='form-control' value="+ value3+">";
+        if ($(this).children('td').eq(3).children('input').length <= 0) {
+            var value3 = $(this).children('td').eq(3).html();
+            var input3 = "<input type='text' class='form-control' value=" + value3 + ">";
             $(this).children('td').eq(3).html(input3)
         }
 
-       // if($(this).children('td').eq(0).html()!=1){
-       //     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>";
-       //
-       //     $(this).children('td').eq(0).append(delBtn)
-       // }
+        // if($(this).children('td').eq(0).html()!=1){
+        //     var delBtn = "<a class='btn btn-default btn-xs' onclick='delLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>";
+        //
+        //     $(this).children('td').eq(0).append(delBtn)
+        // }
 
-
-    })
-
-
-
-
+    });
 }
 
 /***
  * 取消按钮
- * 
+ *
  * */
 function cancel() {
     // //1div隐藏
@@ -562,12 +547,12 @@ function cancel() {
  */
 function save() {
     $('.myclass').each(function () {
-        if($(this).children('td').eq(1).find('input').val().length!=0){
-            var data={
-                warningName:$(this).children('td').eq(1).find('input').val(),
-                warningThreshold:$(this).children('td').eq(2).find('input').val(),
-                warningUnit:$(this).children('td').eq(3).find('input').val(),
-                id:$(this).children('td').eq(4).html(),
+        if ($(this).children('td').eq(1).find('input').val().length != 0) {
+            var data = {
+                warningName: $(this).children('td').eq(1).find('input').val(),
+                warningThreshold: $(this).children('td').eq(2).find('input').val(),
+                warningUnit: $(this).children('td').eq(3).find('input').val(),
+                id: $(this).children('td').eq(4).html(),
             };
             console.log(data);
             //更新或添加
@@ -578,15 +563,15 @@ function save() {
                 data: JSON.stringify(data),
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
-                success:function (result) {
-                    if (result != undefined && result.status == "success"){
+                success: function (result) {
+                    if (result != undefined && result.status == "success") {
 
                     }
                     else {
                         alert(result.message)
                     }
                 },
-                error:function (result) {
+                error: function (result) {
                     alert("服务器异常!")
                 }
             })
@@ -601,9 +586,9 @@ function save() {
  * 删除
  */
 function removeWarning(item) {
-    if(confirm("确定删除?")){
+    if (confirm("确定作废?")) {
         //点击确定后操作
-        var id=$(item).parent().prev().html();
+        var id = $(item).parent().prev().prev().html();
         $.ajax({
             type: "POST",                       // 方法类型
             url: "deleteWarning",               // url
@@ -615,7 +600,8 @@ function removeWarning(item) {
             success: function (result) {
                 if (result != undefined) {
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     console.log("fail: " + result);
                 }
@@ -629,6 +615,37 @@ function removeWarning(item) {
     }
 
 
+}
+
+/*启用*/
+function reStart(item) {
+    if (confirm("确定启用?")) {
+        //点击确定后操作
+        var id = $(item).parent().prev().prev().html();
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "reStartWarning",               // url
+            async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: {
+                'id': id
+            },
+            dataType: "json",
+            success: function (result) {
+                if (result != undefined) {
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+            }
+        });
+
+
+    }
 }
 
 $(document).ready(function () {//页面载入是就会进行加载里面的内容
@@ -657,9 +674,9 @@ function searchWarning() {
 
         data1 = {
             page: page,
-            warningName:$.trim($('#search-name').val()),
-            warningThreshold:$.trim($('#search-warningThreshold').val()),
-            warningUnit:$.trim($('#search-warningUnit').val()),
+            warningName: $.trim($('#search-name').val()),
+            warningThreshold: $.trim($('#search-warningThreshold').val()),
+            warningUnit: $.trim($('#search-warningUnit').val()),
         };
     }
     else {
@@ -705,4 +722,247 @@ function enterSearch() {
     if (event.keyCode === 13) {   // 如果按下键为回车键，即执行搜素
         searchWarning();      //
     }
+}
+
+var aId;   // 预警外键ID
+
+/**
+ * 角色配置模态框显示
+ */
+function showChargeModal(e) {
+    aId = $(e).parent().prev().prev().html();  // 保存ID
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "listRole",                  // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                setDataList(result.data);   // 设置角色数据
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
+
+    /**
+     * 设置数据
+     * @param result
+     */
+    function setDataList(result) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTr");
+        tr.siblings().remove();
+        $.each(result, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    // 编号
+                    case (1):
+                        $(this).html(obj.id);
+                        break;
+                    case (2):
+                        $(this).html(obj.roleName);
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+    }
+    $("#chargeModal").modal('show');
+}
+
+/**
+ * 设置选中
+ */
+function selected(e) {
+    var isChecked = $(e).find("input[name='select']").prop('checked');
+    if (isChecked) {
+        $(e).find("input[name='select']").prop('checked', true);
+    } else {
+        $(e).find("input[name='select']").prop('checked', false);
+    }
+}
+
+/**
+ * 保存角色配置数据
+ */
+function saveRole() {
+    var warning = {};
+    warning.id = aId;    // 设置外键
+    warning.roleIdList = [];
+    $.each($("input[name='select']:checked"), function (index, item) {   //  遍历所有选中的角色
+        var roleId = $(item).parent().parent().next().text();  // 获取角色ID
+        warning.roleIdList.push(roleId);  // 装到数组中去
+    });
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "updateWarningRoleIdList",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(warning),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                $("#chargeModal").modal('hide');
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+}
+
+/**
+ * 显示详细配置模态框
+ */
+function showDetailModal(e) {
+    aId = $(e).parent().prev().prev().html();  // 保存ID
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "getWarningDetailById",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: {
+            id : aId
+        },
+        dataType: "json",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                setDataList(result.data);
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
+
+    /**
+     * 设置数据
+     * @param data
+     */
+    function setDataList(data) {
+        // 获取id为cloneTr的tr元素
+        var tr = $("#cloneTr1");
+        $(".newLine").remove();
+        var serialNumber = 1;
+        $.each(data, function (index, item) {
+            // 克隆tr，每次遍历都可以产生新的tr
+            var clonedTr = tr.clone();
+            clonedTr.show();
+            clonedTr.addClass("newLine");
+            // 循环遍历cloneTr的每一个td元素，并赋值
+            clonedTr.children("td").each(function (inner_index) {
+                var obj = eval(item);
+                // 根据索引为部分td赋值
+                switch (inner_index) {
+                    // 编号
+                    case (0):
+                        $(this).find("span").text(serialNumber);
+                        break;
+                    case (1):
+                        $(this).find("input").val(obj.warningName);
+                        break;
+                    case (2):
+                        $(this).find("input").val(obj.warningThreshold);
+                        break;
+                    case (3):
+                        $(this).find("input").val(obj.warningUnit);
+                        break;
+                }
+            });
+            // 把克隆好的tr追加到原来的tr前面
+            clonedTr.removeAttr("id");
+            clonedTr.insertBefore(tr);
+            serialNumber++;
+        });
+        // 隐藏无数据的tr
+        tr.hide();
+    }
+    $("#detailModal").modal('show');
+}
+
+/**
+ * 新增
+ */
+function addNewDetailLine(item) {
+    var tr = $("#cloneTr1");
+    //获取前一个行的序号,然后+1
+    var serialNumber = $('#tbody').children().length - 1;
+    // 克隆tr，每次遍历都可以产生新的tr
+    var clonedTr = tr.clone();
+    $(clonedTr).children('td').eq(0).find('p').hide();
+    clonedTr.attr('class', 'newLine');
+    clonedTr.show();
+    clonedTr.children().find("input").val("");
+    clonedTr.children().find("input[name='unit']").val("天");
+    clonedTr.find("span[name='serialNumber']").text(serialNumber);
+    clonedTr.insertBefore(tr);
+    clonedTr.removeAttr("id");
+}
+
+/**
+ * 删除行
+ */
+function delDetailLine(e) {
+    var tr = e.parentElement.parentElement;
+    tr.parentNode.removeChild(tr);
+    var serialNumber = 1;
+    $.each($('#tbody').children(), function (index, item) {  // 更新序号
+        $(item).find("span[name='serialNumber']").text(serialNumber);
+        serialNumber++;
+    });
+}
+
+/**
+ * 保存详细配置数据
+ */
+function saveDetail() {
+    var warning = {};
+    warning.id = aId;   // 设置外键
+    warning.warningList = [];
+    // 获取最新数据
+    $.each($("#cloneTr1").prevAll(), function(index,item){
+        var detial = {};
+        detial.warningName = $(item).find("input[name='name']").val();
+        detial.warningThreshold = $(item).find("input[name='threshold']").val();
+        detial.warningUnit = $(item).find("input[name='unit']").val();
+        warning.warningList.push(detial);
+    });
+    $.ajax({
+        type: "POST",                            // 方法类型
+        url: "updateWarningDetail",                 // url
+        async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+        data: JSON.stringify(warning),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                alert(result.message);
+                $("#detailModal").modal('hide');
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器错误！");
+        }
+    });
 }

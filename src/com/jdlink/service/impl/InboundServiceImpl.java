@@ -240,4 +240,14 @@ public class InboundServiceImpl implements InboundService {
         inboundMapper.updateInboundPlanOrderImgUrl(id, imgUrl);
     }
 
+    @Override
+    public void setInboundOrderStateApproval(String inboundOrderId) {
+        inboundMapper.setInboundOrderStateApproval(inboundOrderId);
+    }
+
+    @Override
+    public void setInboundOrderStateBack(String inboundOrderId) {
+        inboundMapper.setInboundOrderStateBack(inboundOrderId);
+    }
+
 }

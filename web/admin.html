@@ -39,6 +39,7 @@
                                 success: function (result) {
                                     if (result != null && result.status === "success") {
                                         var obj = JSON.stringify(result.data);
+                                        var arr = JSON.stringify(result.firstMenuConfiguration);
                                         if (result.data != null) {
                                             // 获取map.html的一级菜单父类名
                                             var name = "";
@@ -54,10 +55,11 @@
                                                     }
                                                 }
                                             }
-                                            localStorage.name = name;   // 寻找字节点中URL为map.html的一级菜单
+                                            localStorage.firstMuneName = name;   // 寻找字节点中URL为map.html的一级菜单
                                         }
                                         $('.loader').hide();  // 隐藏进度条
                                         localStorage.setItem("menuOrganization", obj);
+                                        localStorage.setItem("firstMenuConfiguration", arr);
                                         window.location.href = 'map.html';
                                     }
                                 },
@@ -75,6 +77,8 @@
                     alert(data.message);
                 }
             });
+            // 获取并设置待办事项总数
+            setToDoThingCount();
         }
 
         /**

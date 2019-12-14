@@ -20,6 +20,8 @@ public interface UserMapper {
 
     void deleteRoleById(int id);
 
+    void deleteUserById(int id);
+
     void delete(int id);
 
     User get(int id);
@@ -106,5 +108,11 @@ public interface UserMapper {
     int countByUser(User user);
 
     void modifyPassword(User user);
+
+    List<User> getUserListByRoleId(int roleId);
+
+    User getCompanyEmail();
+
+    void updateCompanyEmail(User user);
 
 }

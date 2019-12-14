@@ -205,7 +205,8 @@
                 ticketRateItem: {
                     dataDictionaryItemId: $("#ticketType").val()
                 },
-                isDisposal: $("input[name='isDisposal']:checked").val()
+                isDisposal: $("input[name='isDisposal']:checked").val(),
+                latitudeAndLongitude:$('#latitudeAndLongitude').val()
             };
             $.ajax({
                 type: "POST",                            // 方法类型
@@ -287,7 +288,8 @@
                 ticketRateItem: {
                     dataDictionaryItemId: $("#ticketType").val()
                 },
-                isDisposal: $("input[name='isDisposal']:checked").val()
+                isDisposal: $("input[name='isDisposal']:checked").val(),
+                latitudeAndLongitude:$('#latitudeAndLongitude').val(),
             };
             // 上传用户数据
             $.ajax({
@@ -529,6 +531,9 @@
                     if (result != undefined) {
                         console.log(result);
                         var data = eval(result);
+                        if($.trim(data.latitudeAndLongitude).length>0){
+                              $('#latitudeAndLongitude').val(data.latitudeAndLongitude)
+                        }
                         $("#companyName").val(data.companyName);
                         $("#organizationCode").val(data.organizationCode);
                         $("#representative").val(data.representative);
@@ -572,6 +577,7 @@
                             $(this).prop('type', 'file');
                         });
                         $("#addType2").prop('checked', true);
+
                     }
                 },
                 error: function (result) {
@@ -729,19 +735,19 @@
             </div><!--/.nav-collapse -->
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-            <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+            <li><a href="todo.html" title="事项">
+                <span class="glyphicon glyphicon-bell"></span>
+            </a>
+            </li>
+            <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
             <li class="dropdown">
                 <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="personalInformation.html">个人信息</a></li>
-                    <li><a href="#">待办事项</a></li>
-                    <li><a href="#" onclick="showLog();">登录日志</a></li>
                     <li><a href="admin.html">注销</a></li>
                 </ul>
             </li>
         </ul>
-
     </nav>
     <div class="container-fluid">
         <div class="row">
@@ -841,9 +847,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="latitudeAndLongitude" class="col-sm-4 control-label">经纬度 <sup></sup></label>
+                            <label for="latitudeAndLongitude" class="col-sm-4 control-label">经纬度(x,y) <sup></sup></label>
                             <div class="col-xs-5">
-                                <input type="text" class="form-control" id="latitudeAndLongitude" name="latitudeAndLongitude" placeholder="">
+                                <input type="text" class="form-control" id="latitudeAndLongitude" name="latitudeAndLongitude" placeholder="119.972394,31.979135">
                             </div>
                         </div>
                     </div>

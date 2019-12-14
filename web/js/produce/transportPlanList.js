@@ -301,28 +301,34 @@ function loadPageList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "listTransportPlanByPage",   // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result !== undefined && result.status === "success") {
-                console.log(result);
-                setPageClone(result.data);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            } else {
-                console.log("fail: " + result);
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchData();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "listTransportPlanByPage",   // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    setPageClone(result.data);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
-    isSearch = false;
+        });
+        isSearch = false;
+    }
     getCheckState();
 }
 
@@ -476,7 +482,8 @@ function setConfirm(e) {
                 if (result != undefined && result.status == "success") {
                     console.log(result);
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -508,7 +515,8 @@ function setInvalid(e) {    //已作废
                 if (result != undefined && result.status == "success") {
                     console.log(result);
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -525,41 +533,68 @@ function setInvalid(e) {    //已作废
  * 提交转移联单
  */
 function setSubmit(e) {    //已提交
+    initSubmitFName(setTransportPlanSubmit.name);
     var r = confirm("确认提交该运输计划单吗？");
+
     if (r) {
         var id = getIdByMenu(e);
-        $.ajax({
-            type: "POST",
-            url: "setTransportPlanSubmit",
-            async: false,
-            dataType: "json",
-            data: {
-                id: id
-            },
-            success: function (result) {
-                if (result != undefined && result.status == "success") {
-                    console.log(result);
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
+        publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
+        // $.ajax({
+        //     type: "POST",
+        //     url: "setTransportPlanSubmit",
+        //     async: false,
+        //     dataType: "json",
+        //     data: {
+        //         id: id
+        //     },
+        //     success: function (result) {
+        //         if (result != undefined && result.status == "success") {
+        //             console.log(result);
+        //             alert(result.message);
+        //             window.location.reload();
+        //         } else {
+        //             alert(result.message);
+        //         }
+        //     },
+        //     error: function (result) {
+        //         console.log(result);
+        //         alert("服务器异常");
+        //     }
+        // });
     }
 }
 
+function setTransportPlanSubmit(id) {
+    $.ajax({
+        type: "POST",
+        url: "setTransportPlanSubmit",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+}
 /**
  * 审批
  */
-function setExamined(e) {    //已作废
-    var r = confirm("确认审批该运输计划单吗？");
-    if (r) {
-        var id = getIdByMenu(e);
+function setExamined(id) {    //已作废
+
+
+
         $.ajax({
             type: "POST",
             url: "setTransportPlanExamined",
@@ -582,9 +617,40 @@ function setExamined(e) {    //已作废
                 alert("服务器异常");
             }
         });
-    }
+
+
 }
 
+/*驳回*/
+function setTransportPlanBack(id) {    //已作废
+
+
+
+    $.ajax({
+        type: "POST",
+        url: "setTransportPlanBack",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+                // console.log(result);
+                // alert(result.message);
+                // window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+
+
+}
 /**
  * 生成接运单
  */
@@ -705,7 +771,9 @@ function adjustData(e) {
                     if (result != undefined && result.status == "success") {
                         console.log(result);
                         alert(result.message);
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
+                        $('#viewModal').modal('hide');
                     } else {
                         alert(result.message);
                     }
@@ -1082,7 +1150,9 @@ function addData() {
                 if (result != undefined && result.status == "success") {
                     console.log(result);
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
+                    $('#appointModal2').modal('hide');
                 } else {
                     alert(result.message);
                 }
@@ -1868,4 +1938,39 @@ function setModalsAndBackdropsOrder() {
         $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
     });
     $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(setTransportPlanSubmit.name);
+    initApprovalFName(setExamined.name);
+    initBakcFName(setTransportPlanBack.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
 }

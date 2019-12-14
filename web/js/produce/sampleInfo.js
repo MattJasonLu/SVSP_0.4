@@ -489,9 +489,10 @@ $('.form_datetime').datetimepicker({
  */
 function appointModal() {
     // 显示框体
+    console.log("执行显示");
     setSelectList();
-    $('#appointModal').modal('show');
 
+    $('#appointModal').modal('show');
 }
 
 /**
@@ -692,7 +693,8 @@ function confirmAllCheck(){
             success: function (result) {
                 if (result.status == "success") {
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -985,8 +987,8 @@ function addNextLine() {
  * 修改信息功能
  */
 function adjustSample(menu) {
-    var state = $(menu).parent().prev().text();
-    if (state == "待收样") {
+    var state = $(menu).parent().prev().prev().text();
+    if (state === "待收样") {
         num = 0;
         setSelectList();        // 设置危废代码和公司名下拉框数据
         $(".newLine").remove();

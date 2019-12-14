@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Map;
 
 @Controller
 public class PRWayBillController {
@@ -571,6 +572,26 @@ public class PRWayBillController {
             res.put("status", "fail");
             res.put("message", "获取失败！");
         }
+        return res.toString();
+    }
+
+    /*状态变为审批中*/
+    @RequestMapping("toSubmitWayBill")
+    @ResponseBody
+    public String toSubmitWayBill(String id){
+        JSONObject res=new JSONObject();
+
+        try {
+            wayBillService.toSubmitWayBill(id);
+            res.put("status", "success");
+            res.put("message", "提交成功");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "提交失败");
+        }
+
         return res.toString();
     }
 }

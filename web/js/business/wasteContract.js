@@ -312,28 +312,35 @@ function loadPageWastesContractList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageWastesContractList",          // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined) {
-                console.log(result);
-                setPageClone(result);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            } else {
-                console.log("fail: " + result);
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchWasteContract();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageWastesContractList",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined) {
+                    console.log(result);
+                    setPageClone(result);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
-    isSearch = false;
+        });
+        isSearch = false;
+    }
+
 }
 
 /**设置合同数据
@@ -640,5 +647,40 @@ $(document).ready(function () {//页面载入是就会进行加载里面的内�
 function addContract() {
     localStorage.contractType="Wastes"
     window.location.href="wastesContractInfo.html"
+
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(submitContract1.name);
+    initApprovalFName(confirm1.name);
+    initBakcFName(back1.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
 
 }

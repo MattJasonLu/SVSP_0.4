@@ -285,6 +285,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageSampleInformationItemList() {
+    loadNavigationList();   // 动态菜单加载
     var pageNumber = 1;               // 显示首页
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");

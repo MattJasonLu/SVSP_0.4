@@ -48,8 +48,8 @@
     <select id="list" parameterType="String" resultMap="CompatibilityRM">
         select * from t_pr_pw where compatibilityId=#{compatibilityId} order by nowTime desc ;
     </select>
-    <update id="approval" >
-        update t_pr_pw set checkState='Keeping',approvalContent=#{1},nowTime=NOW() where pwId=#{0};
+    <update id="approval">
+        update t_pr_pw set checkState='Keeping',checkStateId=76,approvalContent=#{1},nowTime=NOW() where compatibilityId=#{0};
     </update>
     <update id="back" >
         update t_pr_pw set checkStateId=66,backContent=#{1} where compatibilityId=#{0};
@@ -62,7 +62,7 @@
     </update>
 
     <update id="submit" parameterType="String">
-        update t_pr_pw set checkStateId=67  where compatibilityId=#{compatibilityId}
+        update t_pr_pw set checkStateId=63  where compatibilityId=#{compatibilityId}
     </update>
 
     <update id="approvalCompatibility" >

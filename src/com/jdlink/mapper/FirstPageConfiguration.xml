@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jdlink.mapper.FirstPageConfigurationMapper">
+
+
+    <select id="getCountId" resultType="int">
+        select count(id) from t_ur_first_page_configuration;
+    </select>
+
+    <select id="getById" parameterType="int" resultType="Organization">
+        select * from t_ur_first_page_configuration where id=#{id};
+    </select>
+
+    <select id="getByMenuNameAndRoleId" resultType="int">
+        select page_id from t_ur_first_page_configuration_item where a_id in (select id from t_ur_first_page_configuration where first_menu_name=#{name} and role_id=#{id});
+    </select>
+
+    <select id="getPageByMenuNameAndRoleId" resultType="Organization">
+       select * from menu_management where id in (select page_id from t_ur_first_page_configuration_item where a_id in (select id from t_ur_first_page_configuration where first_menu_name=#{name} and role_id=#{id}));
+    </select>
+
+    <select id="getFirstMenuNameListByRoleId" resultType="String">
+        select first_menu_name from t_ur_first_page_configuration where role_id=#{id};
+    </select>
+
+    <insert id="addConfiguration" parameterType="Organization">
+        insert into t_ur_first_page_configuration (id,first_menu_name,role_id) values (#{pId},#{name},#{id});
+    </insert>
+
+    <insert id="addConfigurationItem" parameterType="Organization">
+        insert into t_ur_first_page_configuration_item (a_id,page_id) values (#{pId},#{id});
+    </insert>
+
+    <delete id="deleteByRoleIdAndMenuName">
+        <!--删除首页节点配置数据-->
+        delete from t_ur_first_page_configuration_item where a_id in (select id from t_ur_first_page_configuration where role_id=#{id} and first_menu_name=#{name});
+        delete from t_ur_first_page_configuration where role_id=#{id} and first_menu_name=#{name};
+    </delete>
+
+
+</mapper>

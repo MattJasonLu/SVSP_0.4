@@ -81,7 +81,7 @@
         UPDATE t_pr_transportplan SET checkState='Confirm', checkStateId=74 WHERE id = #{id};
     </update>
     <update id="setStateSubmit" parameterType="String">
-        UPDATE t_pr_transportplan SET checkState='Submitted', checkStateId=73 WHERE id = #{id};
+        UPDATE t_pr_transportplan SET checkState='Submitted', checkStateId=63 WHERE id = #{id};
     </update>
     <update id="setStateExamined" parameterType="String">
         UPDATE t_pr_transportplan SET checkState='Approval', checkStateId=76 WHERE id = #{id};
@@ -89,7 +89,10 @@
     <update id="setStateInvalid" parameterType="String">
         UPDATE t_pr_transportplan SET checkState='Invalid', checkStateId=69 WHERE id = #{id};
     </update>
-
+    <!--驳回-->
+    <update id="setStateBack" parameterType="String">
+        UPDATE t_pr_transportplan SET checkStateId=66 WHERE id = #{id};
+    </update>
     <!--按页列出所有运输计划单-->
     <select id="list" resultMap="TransportPlanRM">
         SELECT * FROM t_pr_transportplan where checkState != 'Invalid' ORDER BY nowTime DESC

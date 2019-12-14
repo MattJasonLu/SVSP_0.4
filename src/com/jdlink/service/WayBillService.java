@@ -53,4 +53,6 @@ public interface WayBillService  {
      * @return
      */
     WayBill getWayBillByContractId(String id);
+
+    void toSubmitWayBill(String id);
 }

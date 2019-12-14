@@ -161,4 +161,18 @@
     <update id="approvalEmergencyMaterial" parameterType="String">
         update t_pl_emergencymaterial set  checkStateId=76 where planId=#{planId}
     </update>
+
+    <!--审批中-->
+    <update id="setEmergencyTSToExamine" parameterType="String">
+        update t_pl_emergencymaterial set checkStateId=63 where planId=#{planId}
+    </update>
+
+    <!--审批-->
+    <update id="setEmergencyToApproval" parameterType="String">
+        update t_pl_emergencymaterial set checkStateId=76 where planId=#{planId}
+    </update>
+    <!--驳回-->
+    <update id="setEmergencyToBack" parameterType="String">
+        update t_pl_emergencymaterial set checkStateId=66 where planId=#{planId}
+    </update>
 </mapper>

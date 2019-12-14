@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>待办事项</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/business/salesman.js"></script>
+    <link href="css/bootstrap/bootstrap-select.min.css" type="text/css" rel="stylesheet">
+    <script src="js/bootstrap/bootstrap-select.min.js"></script>
+    <script src="js/produce/todo.js"></script>
+</head>
+<body onload="LoadTodo()">
+    <!--导航条-->
+    <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1">
+        <div class="main-title">
+            <ul class="nav navbar-nav navbar-left navbar-side">
+                <li>
+                    <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="container navbar-left">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+                <ul class="nav navbar-nav">
+                    <li><a href="wastesPlatform.html">首页</a></li>
+                    <li><a href="map.html" id="function_13" onclick="checkAuthority($(this))">工作台</a></li>
+                    <li class="active ">
+                        <a href="todo.html" id="function_-580" onclick="checkAuthority($(this))">待办事项</a>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="todo.html" title="事项">
+                <span class="glyphicon glyphicon-bell"></span>
+            </a>
+            </li>
+            <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
+            <li class="dropdown">
+                <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="personalInformation.html">个人信息</a></li>
+                    <li><a href="admin.html">注销</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="sidebar">
+                <ul class="sidenav animated fadeInUp">
+                    <!--<li><a href="#"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></a></li>-->
+                    <li class="active"><a class="withripple" href="wastesPlatform.html" id="function_1" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                    <li><a class="withripple" href="businessModel.html" id="function_2" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="compatibilityPlan.html" id="function_3" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="receiveManagement.html" id="function_4" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="storageManagement.html" id="function_5" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="preprocessingManagement.html" id="function_6" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="dispositionManagement.html" id="function_7" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="secondaryManagement.html" id="function_8" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="procurementManagement.html" id="function_9" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="reportManagement.html" id="function_10" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="basicData.html" id="function_11" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="infrastructure.html" id="function_12" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="businessModel.html">系统管理</a></li>
+                    <li class="active">待办事项</li>
+                </ol>
+            </div>
+            <h4 class="sub-header">待办事项</h4>
+            <br>
+            <div class="panel panel-default" id="senior" style="display: none;">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-salesmanId" class="col-sm-5 control-label">业务员编号</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-salesmanId" name="search-salesmanId" placeholder="" onkeyup="searchSalesman();">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-name" class="col-sm-4 control-label">姓名</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-name" name="search-name" placeholder="" onkeyup="searchSalesman();">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-sex" class="col-sm-4 control-label">性别</label>
+                                <div class="col-xs-7">
+                                    <select class="form-control" name="search-sex" id="search-sex" onchange="searchSalesman();">
+                                        <option value="true">男</option>
+                                        <option value="false">女</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-age" class="col-sm-4 control-label">年龄</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-age" name="search-age" placeholder="" onkeyup="searchSalesman();">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="table">
+                <table class="table table-striped table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="text-center">
+                            <label>
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel"
+                                       id="allSel" onclick="allSelect();">
+                            </label>
+                        </th>
+                        <th class="text-center" onclick="sortTable(this,'')">审批单号</th>
+                        <th class="text-center" onclick="sortTable(this,'')">操作事项</th>
+                        <th class="text-center" onclick="sortTable(this,'')">单据名称</th>
+                        <th class="text-center" onclick="sortTable(this,'')">页面链接</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tBody">
+                    <tr id="cloneTr">
+                        <td class="text-center">
+                            <label>
+                                <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                            </label>
+                        </td>
+                        <td class="text-center">20190206</td>
+                        <td class="text-center">待提交</td>
+                        <td class="text-center">应急暂存</td>
+                        <td class="text-center">emergencyTS.html</td>
+                        <td class="text-center">
+                            <a href="emergencyTS.html" id="function_-638" onclick="checkAuthority($(this))" title="跳转">
+                                <span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <!--分页1-->
+            <nav aria-label="Page navigation" style="text-align: center">
+                <ol class="pagination" style="width: 800px;">
+                    <li id="current" style="display: none"><a href="#"></a> </li>
+                    <li id="firstPage">
+                        <a href='#' onclick="switchSalesPage(0)">首 页</a>
+                    </li>
+                    <li id="previous">
+                        <a href="#" aria-label="Previous" onclick="switchSalesPage(parseInt(currentPage)-1);">
+                            <span aria-hidden="true"><span class="glyphicon glyphicon-backward" aria-hidden="true"></span></span>
+                        </a>
+                    </li>
+                    <li><a href="#">1</a></li>
+                    <li id="next">
+                        <a href="#" aria-label="Next" onclick="switchSalesPage(parseInt(currentPage)+1);">
+                            <span aria-hidden="true"><span class="glyphicon glyphicon-forward" aria-hidden="true"></span></span>
+                        </a>
+                    </li>
+                    <li id="endPage">
+                        <a href='#' onclick="switchSalesPage(-2)">尾 页</a>
+                    </li>
+                    <li ><a id="totalPage"></a></li>
+                    <li ><a href="#" onclick="inputSwitchPage()">跳转</a></li>
+                    <li ><input type="text" class="text-center inputText" maxlength="4" style="width:50px; height:34px;" id="pageNumber"></li>
+                    <li class="showLi">每页显示:</li>
+                    <li class="selectLi">
+                        <select id="count" onchange="LoadTodo()">
+                            <option>5</option>
+                            <option selected>15</option>
+                            <option>50</option>
+                        </select>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">分配产废单位</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="model-assign" method="post">
+                        <div class="form-group">
+                            <label for="model-salesmanId" class="control-label">业务员编号</label>
+                            <input type="text" class="form-control" id="model-salesmanId" name="model-salesmanId" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="model-name" class="control-label">名字</label>
+                            <input type="text" class="form-control" id="model-name" name="model-name" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="model-clientList" class="control-label">分配产废单位</label>
+                            <select class="selectpicker input-xlarge form-control show-tick"  multiple  data-live-search="true"  data-live-search-placeholder="搜索..." name="model-clientList" id="model-clientList">
+                                <option value="0">--请选择--</option>
+                            </select>
+                        </div>
+                        <!--<a class="btn btn-primary btn-xs" onclick="Distribution();"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>分配产废单位</a>-->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="Distribution();">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+    .wrap1 {
+        margin-bottom:10px;
+        position:relative;
+    }
+    .notice1 {
+        width:20px;
+        height:20px;
+        line-height:20px;/*行高*/
+        font-size:10px;
+        color:#fff;
+        text-align:center;
+        background-color:#f00;
+        border-radius:50%;
+        position:absolute;/*绝对定位*/
+        right:-10px;
+        top:0;
+    }
+    .wrap {
+        width:50px;
+        margin-bottom:10px;
+        position:relative;
+    }
+    .img {
+        width:50px;
+        height:50px;
+        border:1px solid #000;
+    }
+    .notice {
+        width:20px;
+        height:20px;
+        line-height:20px;/*行高*/
+        font-size:10px;
+        color:#fff;
+        text-align:center;
+        background-color:#f00;
+        border-radius:50%;
+        position:absolute;/*绝对定位*/
+        right:-10px;
+        top:-10px;
+    }
+</style>
+</html>

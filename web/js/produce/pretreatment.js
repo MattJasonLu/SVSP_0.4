@@ -855,7 +855,8 @@ function invalid(item) {
                 success: function (result) {
                     if (result.status == "success") {
                         alert("作废成功!");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     } else {
                         alert(result.message);
                     }
@@ -1973,7 +1974,9 @@ function edit() {
             console.log(result);
             if (result.data != undefined || result.status == "success") {
                 alert("修改成功!");
-                window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#editModal").modal("hide");
             } else {
                 console.log(result.message);
             }
@@ -2106,7 +2109,8 @@ function confirm1(item){
                 success: function (result) {
                     if (result.status == "success") {
                         alert("确认成功!");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     } else {
                         alert(result.message);
                     }

@@ -61,15 +61,15 @@
         </div><!--/.nav-collapse -->
     </div>
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li><a href="todo.html" title="事项">
+            <span class="glyphicon glyphicon-bell"></span>
+        </a>
+        </li>
+        <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
-            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
-                <li><a href="#">待办事项</a></li>
-                <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
@@ -144,7 +144,7 @@
                 <div class="pull-left col-md-6">
                     <a class="btn btn-primary btn-xs" id="function_-335" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addIngredientsIn();}"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
-                    <a class="btn btn-primary btn-xs" id="function_" href="#" onclick="addRedIngredientsIn();" ><span
+                    <a class="btn btn-primary btn-xs" id="function_-595" href="#" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; addRedIngredientsIn();}" ><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 红字入库单</a>
                     <a class="btn btn-primary btn-xs" href="ingredientsIn.html"><span
                             class="glyphicon glyphicon-chevron-left" href="ingredientsIn.html" id="function_-336" onclick="checkAuthority($(this))" aria-hidden="true"></span> 入库单据</a>
@@ -277,18 +277,18 @@
                                        id="allSel" onclick="allSelect()">
                             </label>
                         </th>
-                        <th class="text-center">入库单号</th>
-                        <th class="text-center">单位名</th>
-                        <th class="text-center">入库单状态</th>
-                        <th class="text-center">物品编码</th>
-                        <th class="text-center">物品名称</th>
-                        <th class="text-center">规格</th>
-                        <th class="text-center">计量单位</th>
-                        <th class="text-center">数量</th>
-                        <th class="text-center">单价</th>
-                        <th class="text-center">金额</th>
-                        <th class="text-center">仓库</th>
-                        <th class="text-center">入库日期</th>
+                        <th class="text-center" onclick="sortTable(this,'')">入库单号</th>
+                        <th class="text-center" onclick="sortTable(this,'')">单位名</th>
+                        <th class="text-center" onclick="sortTable(this,'')">入库单状态</th>
+                        <th class="text-center" onclick="sortTable(this,'')">物品编码</th>
+                        <th class="text-center" onclick="sortTable(this,'')">物品名称</th>
+                        <th class="text-center" onclick="sortTable(this,'')">规格</th>
+                        <th class="text-center" onclick="sortTable(this,'')">计量单位</th>
+                        <th class="text-center" onclick="sortTable(this,'')">数量</th>
+                        <th class="text-center" onclick="sortTable(this,'')">单价</th>
+                        <th class="text-center" onclick="sortTable(this,'')">金额</th>
+                        <th class="text-center" onclick="sortTable(this,'')">仓库</th>
+                        <th class="text-center" onclick="sortTable(this,'')">入库日期</th>
                         <th class="text-center" hidden>编号</th>
                         <th class="text-center">操作</th>
                     </tr>

@@ -82,14 +82,15 @@
         </div><!--/.nav-collapse -->
     </div>
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li><a href="todo.html" title="事项">
+            <span class="glyphicon glyphicon-bell"></span>
+        </a>
+        </li>
+        <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
             <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
-                <li><a href="#">待办事项</a></li>
-                <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
@@ -136,13 +137,13 @@
                     <a class="btn btn-primary btn-xs" href="#" id="function_-160" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; appointModal();}"><span
                             class="glyphicon glyphicon-plus" aria-hidden="true"></span> 预约登记</a>
                 </div>
-                <a class="btn btn-primary btn-xs" href="#" id="function_-161" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span
+                <a class="btn btn-primary btn-xs" href="#" id="function_-626" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose();}"><span
                         class="glyphicon glyphicon-arrow-down"
                         aria-hidden="true"></span> 导入</a>
-                <a class="btn btn-primary btn-xs" href="#" id="function_-162" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span
+                <a class="btn btn-primary btn-xs" href="#" id="function_-627" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel();}"><span
                         class="glyphicon glyphicon-arrow-up"
                         aria-hidden="true"></span> 导出</a>
-                <a class="btn btn-primary btn-xs" id="" onclick="confirmAllCheck()"><span
+                <a class="btn btn-primary btn-xs" id="function_-625" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; confirmAllCheck();}"><span
                         class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>确认收样</a>
                 <!--查询框-->
                 <div class="input-group col-md-4 pull-right">
@@ -263,8 +264,8 @@
                         <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                     </label>
                 </th>
-                <th class="text-center">预约单号</th>
-                <th class="text-center">
+                <th class="text-center" onclick="sortTable(this,'')">预约单号</th>
+                <th class="text-center" onclick="sortTable(this,'')">
                     <div class="form-inline">
                         <label class="control-label">材料类别</label>
                         <!--<select title="" class="form-control" id="type" style="height: 80%; font-size: x-small;"-->
@@ -277,10 +278,10 @@
                         <!--</select>-->
                     </div>
                 </th>
-                <th class="text-center">检测项目</th>
-                <th class="text-center">送样人</th>
-                <th class="text-center">签收人</th>
-                <th class="text-center">状态</th>
+                <th class="text-center" onclick="sortTable(this,'')">检测项目</th>
+                <th class="text-center" onclick="sortTable(this,'')">送样人</th>
+                <th class="text-center" onclick="sortTable(this,'')">签收人</th>
+                <th class="text-center" onclick="sortTable(this,'')">状态</th>
                 <th class="text-center">操作</th>
             </tr>
             </thead>
@@ -298,11 +299,11 @@
                 <td class="text-center"></td>
                 <td class="text-center" name="state"></td>
                 <td class="text-center">
-                    <a href="#" id="function_-163" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; view(e);}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                    <a href="#" id="function_-164" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjust(e);}" title="修改"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                    <a href="#" id="function_-165" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setInvalid(e);}" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
-                    <a href="#" id="function_-166" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setSubmit(e);}" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
-                    <a href="#" id="function_-167" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; rejection(e);}" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                    <a href="#" id="function_-629" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; view(e);}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                    <a href="#" id="function_-630" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjust(e);}" title="修改"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                    <a href="#" id="function_-631" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setInvalid(e);}" title="作废"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+                    <a href="#" id="function_-632" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; setSubmit(e);}" title="确认收样"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+                    <a href="#" id="function_-633" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; rejection(e);}" title="拒收"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
                 </td>
             </tr>
             </tbody>

@@ -310,5 +310,15 @@ public class BatchOrderServiceImpl implements BatchOrderService
         return batchOrderMapper.searchBatchingTotal(batchingOrder);
     }
 
+    @Override
+    public List<MaterialRequisitionOrder> searchMaterialRequisitionOrder(MaterialRequisitionOrder materialRequisitionOrder) {
+        return batchOrderMapper.searchMaterialRequisitionOrder(materialRequisitionOrder);
+    }
+
+    @Override
+    public int searchMaterialRequisitionOrderCount(MaterialRequisitionOrder materialRequisitionOrder) {
+        return batchOrderMapper.searchMaterialRequisitionOrderCount(materialRequisitionOrder);
+    }
+
 
 }

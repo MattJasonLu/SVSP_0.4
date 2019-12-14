@@ -788,8 +788,9 @@ function cancelMedicalWastes(item) {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     console.log(result);
-                    alert(result.message)
-                    window.location.reload();
+                    alert(result.message);
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
                 else {
                     alert(result.message);
@@ -1062,7 +1063,9 @@ function adjustMedicalWaste() {
                 console.log(getDateStr(result.date))
                 UpdatePeriodAndInventory(getDateStr(result.date));
                 alert("修改成功")
-                 window.location.reload();
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#addModa2").modal("hide");
             }
         },
         error:function (result) {

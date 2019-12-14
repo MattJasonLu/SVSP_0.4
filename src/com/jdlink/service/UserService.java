@@ -24,6 +24,8 @@ public interface UserService {
 
     void deleteRoleById(int id);
 
+    void deleteUserById(int id);
+
     List<User> getByUsername(String username);
 
     User getById(String id);
@@ -118,5 +120,11 @@ public interface UserService {
      * @return
      */
     User getCurrentUserInfo(HttpSession session);
+
+    List<User> getUserListByRoleId(int roleId);
+
+    User getCompanyEmail();
+
+    void updateCompanyEmail(User user);
 
 }

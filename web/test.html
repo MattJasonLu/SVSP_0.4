@@ -1,44 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <script src="js/time.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript">
+        function allowDrop(ev)
+        {
+            ev.preventDefault();
+        }
+
+        function drag(ev)
+        {
+            ev.dataTransfer.setData("Text",ev.target.id);
+        }
+
+        function drop(ev)
+        {
+            ev.preventDefault();
+            var data=ev.dataTransfer.getData("Text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
 </head>
 <body>
-<input type="text" id="time" size="25"><button id="start">开始</button><button id="end">结束</button>
+<div class="row">
+    <div class="box-shadow" id="div1" ondrop="drop(event)" ondragover="allowDrop(event)" style="height: 500px;width: 45%;float: left">
+        <p id="drag1" draggable="true" ondragstart="drag(event)">111111111111</p>
+        <p id="drag2" draggable="true" ondragstart="drag(event)">222222222222</p>
+        <p id="drag3" draggable="true" ondragstart="drag(event)">333333333333</p>
+        <p id="drag4" draggable="true" ondragstart="drag(event)">444444444444</p>
+    </div>
+    <div class="box-shadow" id="div2" ondrop="drop(event)" ondragover="allowDrop(event)" style="height: 500px;width: 45%;float: left"></div>
+</div>
 </body>
-<script>
-    //setInterval 里面的函数一直循环下去
-    //setTimeout 里面的函数只执行一次 如果要做时钟的话 就在方法里套用setTime
-    // var flag=true;
-
-   // var time= setInterval(getTime,1000);//必须要 调用循环函数 time作为停止的唯一标示
-   //  $('#start').click(function () {
-   //           time= setInterval(getTime,1000);//开始
-   //  });
-   //  $('#end').click(function () {
-   //         clearInterval(time);//清除
-   //  });
-   //  //
-   // function getTime() {
-    //     var date=new Date();
-    //     $('#time').val((date));
-    // }
-    function getTime1() {
-        var date=new Date();
-        $('#time').val((date));
-         t=setTimeout(getTime1,1000);
+<style>
+    .box-shadow{
+        border-radius: 10px;
+        border:1px solid #aeaeae;
+        margin: 10px;
+        box-shadow: 0 0 10px #107093;
     }
-    getTime1();
-
-     $('#end').click(function () {
-            clearInterval(t);//清除
-     });
-
-     $('#start').click(function () {
-         t=setTimeout(getTime1,1000);
-     });
-</script>
+</style>
 </html>

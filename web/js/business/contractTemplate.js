@@ -260,27 +260,33 @@ function loadPageContractTemplateList() {
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
    // console.log(page);
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageContractTemplateList",          // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                setPageClone(result);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            } else {
-                console.log(result.message);
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchModel();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageContractTemplateList",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    setPageClone(result);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
+        });
+    }
     setModelSelectedList();
 }
 
@@ -838,6 +844,7 @@ function dataLeftCompleting(bits, identifier, value) {
 
 //合同模板升级的载入方法
 function getContractList() {
+    loadNavigationList();   // 动态菜单加载
     var contractId=localStorage["contractId"];
     //console.log(contractId);
     $.ajax({
@@ -936,32 +943,33 @@ function enterSearch() {
 }
 
 function approval(item) {
-
-    var contractId=item.parentElement.previousElementSibling.innerHTML;
-
-    if(confirm("确认审批通过?")){
-        //点击确定后操作
-     $.ajax({
-         type: "POST",                            // 方法类型
-         url: "approvalModel",                  // url
-         dataType: "json",
-         data:{"contractId":contractId},
-         async: false,
-         success:function (result) {
-             if (result != undefined && result.status == "success"){
-                 alert(result.message)
-                 window.location.reload()
-             }
-             else {
-
-                 alert(result.message);
-
-             }
-         },
-         error:function (result) {
-             alert('服务器异常!')
-         }
-         
-     })
-    }
+    //
+    // var contractId=item.parentElement.previousElementSibling.innerHTML;
+    //
+    // if(confirm("确认审批通过?")){
+    //     //点击确定后操作
+    //  $.ajax({
+    //      type: "POST",                            // 方法类型
+    //      url: "approvalModel",                  // url
+    //      dataType: "json",
+    //      data:{"contractId":contractId},
+    //      async: false,
+    //      success:function (result) {
+    //          if (result != undefined && result.status == "success"){
+    //              alert(result.message)
+    //              window.location.reload()
+    //          }
+    //          else {
+    //
+    //              alert(result.message);
+    //
+    //          }
+    //      },
+    //      error:function (result) {
+    //          alert('服务器异常!')
+    //      }
+    //
+    //  })
+    // }
+    $("#approval").modal('show')
 }

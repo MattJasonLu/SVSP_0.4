@@ -65,7 +65,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         select * from  t_pr_stock where stockId=#{stockId}
     </select>
     <select id="getByName" parameterType="String" resultMap="StockRM">
-        select * from  t_pr_stock where clientId=(select clientId from client where companyName=#{client.companyName}) LIMIT 1;
+        select * from  t_pr_stock where clientId=(select clientId from client where companyName=#{stockName}) LIMIT 1;
     </select>
     <update id="updateStock" parameterType="Stock" >
         update t_pr_stock set proContactName=#{proContactName},proTelephone=#{proTelephone},
@@ -79,7 +79,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         <!--</if>-->
     </update>
     <update id="submitStock" parameterType="String">
-        update t_pr_stock set  checkStateId=67 ,nowTime=NOW() where stockId=#{stockId};
+        update t_pr_stock set  checkStateId=63 ,nowTime=NOW() where stockId=#{stockId};
     </update>
     <update id="cancelStock" parameterType="String">
           update t_pr_stock set  checkStateId=69 ,nowTime=NOW() where stockId=#{stockId};
@@ -96,7 +96,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
                 or clientId in(select clientId from client where capacity = #{keyword})
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%")
                 or proTelephone like "%"#{keyword}"%"
-
+                or stockId like "%"#{keyword}"%"
             </if>
             <if test="supplier != null">
                 <if test="supplier.companyName!=''">
@@ -139,6 +139,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
                 or clientId in(select clientId from client where capacity = #{keyword})
                 or checkStateId in(select dataDictionaryItemId from datadictionaryitem where dictionaryItemName like "%"#{keyword}"%")
                 or proTelephone like "%"#{keyword}"%"
+                or stockId like "%"#{keyword}"%"
             </if>
             <if test="supplier != null">
                 <if test="supplier.companyName!=''">
@@ -162,7 +163,7 @@ values (#{stockId},#{proContactName},#{proTelephone},#{transport},#{transportTel
         </where>
     </select>
     <update id="opinion" parameterType="Stock">
-    update t_pr_stock set opinion=#{1},checkStateId=68,nowTime=NOW() where stockId=#{0};
+    update t_pr_stock set opinion=#{1},checkStateId=76,nowTime=NOW() where stockId=#{0};
    </update>
     <update id="back" parameterType="Stock">
         update t_pr_stock set checkStateId=66,backContent=#{1},nowTime=NOW() where stockId=#{0}

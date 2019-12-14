@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页配置</title>
+    <script src="js/jquery/2.0.0/jquery.min.js"></script>
+    <script src="js/jquery/2.0.0/jquery.serializejson.js"></script>
+    <script src="js/jquery/jquery.validate.min.js"></script>
+    <script src="js/jquery/additional-methods.js"></script>
+    <script src="js/jquery/messages_zh.js"></script>
+    <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/validation.css" rel="stylesheet">
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="js/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/util.js"></script>
+    <link href="css/dropdown-submenu.css" rel="stylesheet">
+    <link href="css/bootstrap/navbar.css" rel="stylesheet">
+    <script src="js/bootstrap/navbar.js"></script>
+    <script src="js/produce/firstPageConfiguration.js"></script>
+</head>
+<body onload="loadData();">
+    <!--导航条-->
+    <nav class="navbar navbar-inverse navbar-fixed-top float" id="navbar1" style="height: 50px;">
+        <div class="main-title">
+            <ul class="nav navbar-nav navbar-left navbar-side">
+                <li>
+                    <a href="#" onclick="$('body').toggleClass('sidebar-collapse');" style="width: 50px">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="container navbar-left" style="width: 900px;">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><img src="image/logo2.png"></a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse" style="margin-left: 150px;">
+                <ul class="nav navbar-nav">
+
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="todo.html" title="事项">
+                <span class="glyphicon glyphicon-bell"></span>
+            </a>
+            </li>
+            <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
+            <li class="dropdown">
+                <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="personalInformation.html">个人信息</a></li>
+                    <li><a href="admin.html">注销</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="sidebar">
+                <ul class="sidenav animated fadeInUp">
+                    <li><a class="withripple" href="wastesPlatform.html" id="function_1" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统概览 </span><span class="iright pull-right">&gt;</span><span class="sr-only">(current)</span></a></li>
+                    <li><a class="withripple" href="businessModel.html" id="function_2" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-user" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;商务管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="compatibilityPlan.html" id="function_3" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-list" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;配伍计划 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="receiveManagement.html" id="function_4" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;接收管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="storageManagement.html" id="function_5" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-save" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;贮存管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="preprocessingManagement.html" id="function_6" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;预备管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="dispositionManagement.html" id="function_7" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;处置管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="secondaryManagement.html" id="function_8" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;次生管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="procurementManagement.html" id="function_9" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-indent-right" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;采购管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="reportManagement.html" id="function_10" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;报表管理 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li><a class="withripple" href="basicData.html" id="function_11" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;基础数据 </span><span class="iright pull-right">&gt;</span></a></li>
+                    <li class="active"><a class="withripple" href="infrastructure.html" id="function_12" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span class="sidespan">&nbsp;&nbsp;系统设置 </span><span class="iright pull-right">&gt;</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <!--面包屑导航-->
+            <div>
+                <ol class="breadcrumb">
+                    <li><a href="">系统设置</a></li>
+                    <li class="active">首页配置</li>
+                </ol>
+            </div>
+            <h4 class="sub-header">首页配置</h4>
+            <!--<div class="row">-->
+                <!--<div>-->
+                    <!--&lt;!&ndash;查询框&ndash;&gt;-->
+                    <!--<div class="input-group col-md-4 pull-right">-->
+                        <!--<input type="text" class="form-control" placeholder="搜索..." id="searchContent">-->
+                        <!--<span class="input-group-btn">-->
+                            <!--<a class="btn btn-default" onclick="searchData();"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>-->
+                            <!--<a class="btn btn-default" onclick="$('#senior').toggle();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 高级查询</a>-->
+                            <!--<a class="btn btn-default" onclick="reset();"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 重置</a>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<br>-->
+            <!--<div class="panel panel-default" id="senior" style="display: none;">-->
+                <!--<div class="panel-body">-->
+                    <!--<div class="row">-->
+                        <!--<div class="form-horizontal col-md-4">-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="search_ID" class="col-sm-4 control-label">角色ID</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<input type="text" class="form-control" id="search_ID" name="type" onkeyup="enterSearch()">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-horizontal col-md-4">-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="search_character" class="col-sm-4 control-label">角色</label>-->
+                                <!--<div class="col-xs-7">-->
+                                    <!--<input class="form-control" name="creator" id="search_character" onkeyup="enterSearch()">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <div class="table">
+                <table class="table table-striped table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="text-center">
+                            <label>
+                                <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
+                            </label>
+                        </th>
+                        <th class="text-center" onclick="sortTable(this,'')">角色ID</th>
+                        <th class="text-center" onclick="sortTable(this,'')">角色</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tBody">
+                    <tr id="cloneTr">
+                        <td class="text-center">
+                            <label>
+                                <input name="select" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                            </label>
+                        </td>
+                        <td class="text-center" name="roleId"></td>
+                        <td class="text-center" name="roleName"></td>
+                        <td class="text-center">
+                            <a href="#" id="function_-620" title="首页节点配置" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; firstModalShow(e);}"><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--一级菜单模态框-->
+    <div class="modal fade" id="firstModal" tabindex="-1" role="dialog" aria-labelledby="firstModal">
+        <div class="modal-dialog" role="document" style="height: 100%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>菜单设置</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="box-shadow" id="firstMenu" style="width: 45%;height: 60%;float: left;overflow-y: scroll;">
+                            <p class="firstMenu">系统设置</p><span hidden name="id">12</span><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="firstMenu">商务管理</p><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="firstMenu">配伍计划</p><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="firstMenu">接收管理</p><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="firstMenu">贮存管理</p><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="firstMenu">处置管理</p><a onclick="view()" class="glyphicon glyphicon-plus menu"></a>
+                        </div>
+                        <div class="box-shadow" id="menuPage" style="width: 45%;height: 60%;float: left;overflow-y: auto">
+                            <p class="firstMenu">系统设置</p><a onclick="view()" class="glyphicon glyphicon-minus menu"></a>
+                            <hr class="firstMenu">
+                            <p class="hidden"><input type="checkbox" title="">动态菜单管理</p>
+                            <p class="hidden"><input type="checkbox" title="">审批流管理</p>
+                            <p class="hidden"><input type="checkbox" title="">首页设置</p>
+                            <p class="hidden"><input type="checkbox" title="">邮箱设置</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer center">
+                    <button type="button" class="btn btn-success" onclick="save()">保存</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function view() {
+        $("p").removeAttr("class");
+    }
+</script>
+<!--分页格式-->
+<style type="text/css">
+    .firstMenu{
+        margin: 5px;
+    }
+    .menu{
+        float: right;
+        margin-top: -23px;
+        margin-right: 5px
+    }
+    .pagination > li {
+        display: inline;
+    }
+    table th, table td {
+        vertical-align: middle!important;
+    }
+    .box-shadow{
+        border-radius: 10px;
+        border:1px solid #54b4e9;
+        margin: 10px;
+        box-shadow: 0 0 10px #107093;
+    }
+</style>
+
+</html>

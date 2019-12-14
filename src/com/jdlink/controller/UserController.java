@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  * Created by matt on 2018/4/23.
  */
@@ -592,4 +591,72 @@ public class UserController {
         }
         return res.toString();
     }
+
+
+    /**
+     * 获取公司邮箱信息
+     * @return
+     */
+    @RequestMapping("getCompanyEmail")
+    @ResponseBody
+    public String getCompanyEmail() {
+        JSONObject res = new JSONObject();
+        try {
+            User user = userService.getCompanyEmail();
+            JSONObject data = JSONObject.fromBean(user);
+            res.put("status", "success");
+            res.put("message", "获取邮箱成功");
+            res.put("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "获取邮箱失败");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 修改公司邮箱
+     * @param user
+     * @return
+     */
+    @RequestMapping("updateCompanyEmail")
+    @ResponseBody
+    public String updateCompanyEmail(@RequestBody User user) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.updateCompanyEmail(user);
+            res.put("status", "success");
+            res.put("message", "修改邮箱成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "修改邮箱失败！");
+            res.put("exception", e.getMessage());
+        }
+        return res.toString();
+    }
+
+    /**
+     * 删除账号
+     * @param
+     * @return 结果
+     */
+    @RequestMapping("deleteUserById")
+    @ResponseBody
+    public String deleteUserById(int id) {
+        JSONObject res = new JSONObject();
+        try {
+            userService.deleteUserById(id);
+            res.put("status", "success");
+            res.put("message", "删除账号成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "删除账号失败");
+        }
+        return res.toString();
+    }
+
 }

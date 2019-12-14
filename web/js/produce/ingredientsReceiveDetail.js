@@ -479,7 +479,7 @@ function setSeniorSelectedList() {
                 var state = $("#search-state");
                 state.children().remove();
                 $.each(data, function (index, item) {
-                    if(item.dataDictionaryItemId === 75 || item.dataDictionaryItemId === 69){
+                    if(item.dataDictionaryItemId === 75 || item.dataDictionaryItemId === 69) {
                         var option = $('<option />');
                         option.val(item.dataDictionaryItemId);
                         option.text(item.dictionaryItemName);
@@ -516,10 +516,10 @@ function exportExcel() {
             else if (i == idArry.length - 1) sql += "'" + idArry[i] + "'" + ");";
         }
         sqlWords = "select * from t_pr_ingredients_receive as a join t_pr_ingredients as b where receiveId = id and itemId" + sql;
-    }else {          // 若无勾选项则导出全部
+    } else {          // 若无勾选项则导出全部
         sqlWords = "select * from t_pr_ingredients_receive as a join t_pr_ingredients as b where receiveId = id;";
     }
-    console.log("sql:"+sqlWords);
+    console.log("sql:" + sqlWords);
     window.open('exportExcel?name=' + name + '&sqlWords=' + sqlWords);
 }
 
@@ -879,7 +879,8 @@ function invalid(item) {
                 success: function (result) {
                     if (result.status == "success") {
                         alert("作废成功！");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     } else {
                         alert(result.message);
                     }

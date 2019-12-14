@@ -145,7 +145,8 @@
                     if (result != undefined) {
                         if (result.status == "success") {
                             alert("提交成功");
-                            window.location.reload();
+                            $("#pageNumber").val(currentPage);   // 设置当前页页数
+                            inputSwitchSupplierPage();  // 跳转当前页
                         } else if (result.status == "fail") {
                             alert("提交失败");
                         }
@@ -180,7 +181,8 @@
                     if (result != undefined) {
                         if (result.status == "success") {
                             alert("禁用成功");
-                            window.location.reload();
+                            $("#pageNumber").val(currentPage);   // 设置当前页页数
+                            inputSwitchSupplierPage();  // 跳转当前页
                         } else if (result.status == "fail") {
                             alert("禁用失败");
                         }
@@ -215,7 +217,8 @@
                     if (result != undefined) {
                         if (result.status == "success") {
                             alert("启用成功");
-                            window.location.reload();
+                            $("#pageNumber").val(currentPage);   // 设置当前页页数
+                            inputSwitchSupplierPage();  // 跳转当前页
                         } else if (result.status == "fail") {
                             alert("启用失败");
                         }
@@ -844,14 +847,15 @@
             </div><!--/.nav-collapse -->
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-            <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+            <li><a href="todo.html" title="事项">
+                <span class="glyphicon glyphicon-bell"></span>
+            </a>
+            </li>
+            <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
             <li class="dropdown">
                 <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="personalInformation.html">个人信息</a></li>
-                    <li><a href="#">待办事项</a></li>
-                    <li><a href="#" onclick="showLog();">登录日志</a></li>
                     <li><a href="admin.html">注销</a></li>
                 </ul>
             </li>
@@ -894,10 +898,10 @@
                 <div>
                     <!--操作按钮-->
                     <div class="pull-left col-md-6">
-                        <a class="btn btn-primary btn-xs" id="function_-76" href="procurementSupplierInfo.html" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
+                        <a class="btn btn-primary btn-xs" id="function_-655" href="procurementSupplierInfo.html" onclick="checkAuthority($(this))"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 新增</a>
                         <!--<a class="btn btn-primary btn-xs" id="function_129" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; submitSuppliers(e);}"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 提交</a>-->
-                        <a class="btn btn-primary btn-xs" id="function_-77" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
-                        <a class="btn btn-primary btn-xs" id="function_-78" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
+                        <a class="btn btn-primary btn-xs" id="function_-656" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; importExcelChoose(e)}"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 导入</a>
+                        <a class="btn btn-primary btn-xs" id="function_-657" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; exportExcel(e)}"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 导出</a>
                     </div>
                     <!--查询框-->
                     <div class="input-group col-md-4 pull-right">
@@ -979,14 +983,14 @@
                                     <input class="checkbox" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
                                 </label>
                             </th>
-                            <th class="text-center">单位编号</th>
-                            <th class="text-center" style="width: 300px;">单位名称</th>
-                            <th class="text-center">单位类型</th>
-                            <th class="text-center">单位状态</th>
-                            <th class="text-center">账号状态</th>
-                            <th class="text-center">联系人</th>
-                            <th class="text-center">联系方式</th>
-                            <th class="text-center">录入人</th>
+                            <th class="text-center" onclick="sortTable(this,'')">单位编号</th>
+                            <th class="text-center" onclick="sortTable(this,'')" style="width: 300px;">单位名称</th>
+                            <th class="text-center" onclick="sortTable(this,'')">单位类型</th>
+                            <th class="text-center" onclick="sortTable(this,'')">单位状态</th>
+                            <th class="text-center" onclick="sortTable(this,'')">账号状态</th>
+                            <th class="text-center" onclick="sortTable(this,'')">联系人</th>
+                            <th class="text-center" onclick="sortTable(this,'')">联系方式</th>
+                            <th class="text-center" onclick="sortTable(this,'')">录入人</th>
                             <th class="text-center">操作</th>
                         </tr>
                     </thead>
@@ -1006,13 +1010,13 @@
                             <td class="text-center"></td>
                             <td class="text-center"></td>
                             <td class="text-center">
-                                <a href="#" id="function_-79" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewSupplier(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                                <a href="#" id="function_-80" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjustSupplier(e);}" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                                <a href="#" id="function_-658" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; viewSupplier(e);}" title="查看"><span class="glyphicon glyphicon glyphicon-search" aria-hidden="true"></span></a>
+                                <a href="#" id="function_-659" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; adjustSupplier(e);}" title="修改"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
                                 <!--<a href="#" id="function_135" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; examineSupplier(e);}" title="审批"><span class="glyphicon glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></a>-->
                                 <!--<a href="#" id="function_136" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; commitSupplier(e);}" title="提交"><span class="glyphicon glyphicon glyphicon-export" aria-hidden="true"></span></a>-->
-                                <a href="#" id="function_-82" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; disableSupplier(e);}" title="禁用"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
-                                <a href="#" id="function_-83" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; enableSupplier(e);}" title="启用"><span class="glyphicon glyphicon glyphicon-ok-circle" aria-hidden="true"></span></a>
-                                <a href="#" id="function_-81" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; deleteSupplier(e);}" title="删除"><span class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
+                                <a href="#" id="function_-660" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; disableSupplier(e);}" title="禁用"><span class="glyphicon glyphicon glyphicon-ban-circle" aria-hidden="true"></span></a>
+                                <a href="#" id="function_-661" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; enableSupplier(e);}" title="启用"><span class="glyphicon glyphicon glyphicon-ok-circle" aria-hidden="true"></span></a>
+                                <a href="#" id="function_-662" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; deleteSupplier(e);}" title="删除"><span class="glyphicon glyphicon glyphicon-remove-sign" aria-hidden="true"></span></a>
                             </td>
                         </tr>
                     </tbody>
@@ -1446,7 +1450,8 @@
                     if (result != undefined) {
                         console.log(result);
                         alert("删除成功!");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchSupplierPage();  // 跳转当前页
                     } else {
                         console.log("fail: " + result);
                         alert("删除失败!");

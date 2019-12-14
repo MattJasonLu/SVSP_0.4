@@ -373,8 +373,8 @@ public class ProcurementController {
 
     }
 
-    /**
-     * 提交
+       /**
+     * 审批
      */
     @RequestMapping("setProcurementListSubmit")
     @ResponseBody
@@ -383,17 +383,39 @@ public class ProcurementController {
         try {
             procurementService.setProcurementListSubmit(receiptNumber);
             res.put("status", "success");
-            res.put("message", "提交成功");
+            res.put("message", "审批成功");
 
         } catch (Exception e) {
             e.printStackTrace();
             res.put("status", "fail");
-            res.put("message", "提交失败");
+            res.put("message", "审批失败");
         }
         return res.toString();
 
     }
 
+
+
+    /**
+     * 驳回
+     */
+    @RequestMapping("setProcurementListBack")
+    @ResponseBody
+    public String setProcurementListBack(String receiptNumber) {
+        JSONObject res = new JSONObject();
+        try {
+            procurementService.setProcurementListBack(receiptNumber);
+            res.put("status", "success");
+            res.put("message", "驳回成功");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败");
+        }
+        return res.toString();
+
+    }
     /**
      * 获取月季采购总数
      */

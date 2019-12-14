@@ -65,7 +65,7 @@
         update t_pr_materialrequire set checkStateId=76,opinion=#{1}  where materialRequireId=#{0};
     </update>
     <update id="submit" parameterType="String">
-        update t_pr_materialrequire set checkStateId=67,nowTime=NOW() where materialRequireId=#{materialRequireId};
+        update t_pr_materialrequire set checkStateId=63,nowTime=NOW() where materialRequireId=#{materialRequireId};
     </update>
     <update id="cancel" parameterType="String">
         update t_pr_materialrequire set checkStateId=69  where materialRequireId=#{materialRequireId};

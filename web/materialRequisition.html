@@ -64,14 +64,15 @@
             </div><!--/.nav-collapse -->
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-            <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+            <li><a href="todo.html" title="事项">
+                <span class="glyphicon glyphicon-bell"></span>
+            </a>
+            </li>
+            <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
             <li class="dropdown">
                 <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="personalInformation.html">个人信息</a></li>
-                    <li><a href="#">待办事项</a></li>
-                    <li><a href="#" onclick="showLog();">登录日志</a></li>
                     <li><a href="admin.html">注销</a></li>
                 </ul>
             </li>
@@ -151,18 +152,24 @@
                                     <input type="text" class="form-control" id="search-Id" name="search-Id" placeholder="" onkeyup="enterSearch()">
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-horizontal col-md-3">
-                            <!--<div class="form-group">-->
-                                <!--<label for="search-wastesCode" class="col-sm-4 control-label">危废代码</label>-->
-                                <!--<div class="col-xs-7">-->
-                                    <!--<input type="text" class="form-control" id="search-wastesCode" name="search-wastesCode" placeholder="" onkeyup="enterSearch()">-->
-                                <!--</div>-->
-                            <!--</div>-->
+                            <div class="form-group">
+                                <label for="search-checkState" class="col-sm-4 control-label">状态</label>
+                                <div class="col-xs-7">
+                                    <select type="text" class="form-control" id="search-checkState" name="search-Id" placeholder="" onchange="searchMaterial()"></select>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-horizontal col-md-3">
                             <div class="form-group">
-                                <label for="search-wastesType" class="col-sm-4 control-label">危废类别</label>
+                                <label for="search-wastesName" class="col-sm-4 control-label">危废名称</label>
+                                <div class="col-xs-7">
+                                    <input type="text" class="form-control" id="search-wastesName" name="search-wastesCode" placeholder="" onkeyup="enterSearch()">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-horizontal col-md-3">
+                            <div class="form-group">
+                                <label for="search-wastesType" class="col-sm-4 control-label">危废代码</label>
                                 <div class="col-xs-7">
                                     <input type="text" class="form-control" id="search-wastesType" name="search-wastesType" placeholder="" onkeyup="enterSearch()">
                                 </div>
@@ -190,18 +197,18 @@
                                 </label>
                             </th>
                             <th class="text-center hidden">编号</th>
-                            <th class="text-center">领料单号</th>
-                            <th class="text-center">厂家</th>
-                            <th class="text-center">危废名称</th>
-                            <th class="text-center">危废类别</th>
+                            <th class="text-center" onclick="sortTable(this,'')">领料单号</th>
+                            <th class="text-center" onclick="sortTable(this,'')">厂家</th>
+                            <th class="text-center" onclick="sortTable(this,'')">危废名称</th>
+                            <th class="text-center" onclick="sortTable(this,'')">危废代码</th>
                             <th class="text-center hidden">配料数量</th>
-                            <th class="text-center">领用数量</th>
-                            <th class="text-center">主管副总经理</th>
-                            <th class="text-center">部门仓库主管</th>
-                            <th class="text-center">保管员</th>
-                            <th class="text-center">领料部门主管</th>
-                            <th class="text-center">领料人</th>
-                            <th class="text-center">状态</th>
+                            <th class="text-center" onclick="sortTable(this,'')">领用数量</th>
+                            <th class="text-center" onclick="sortTable(this,'')" hidden>主管副总经理</th>
+                            <th class="text-center" onclick="sortTable(this,'')" hidden> 部门仓库主管</th>
+                            <th class="text-center" onclick="sortTable(this,'')" hidden>保管员</th>
+                            <th class="text-center" onclick="sortTable(this,'')" hidden>领料部门主管</th>
+                            <th class="text-center" onclick="sortTable(this,'')" hidden>领料人</th>
+                            <th class="text-center" onclick="sortTable(this,'')">状态</th>
                             <th class="text-center">操作</th>
                         </tr>
                         </thead>
@@ -219,11 +226,11 @@
                             <td class="text-center "></td>
                             <td class="text-center hidden"></td>
                             <td class="text-center "></td>
-                            <td class="text-center "></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
+                            <td class="text-center hidden"></td>
+                            <td class="text-center hidden"></td>
+                            <td class="text-center hidden"></td>
+                            <td class="text-center hidden"></td>
+                            <td class="text-center hidden"></td>
                             <td class="text-center"></td>
                             <td class="text-center">
                                 <a href="#" id="function_-270" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; view(e);}" title="查看"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
@@ -305,7 +312,7 @@
                                 <th style="width: 180px">领料单号</th>
                                 <th>厂家</th>
                                 <th>危废名称</th>
-                                <th>危废类别</th>
+                                <th>危废代码</th>
                                 <th>领用数量</th>
                                 <th>主管副总经理</th>
                                 <th>部门仓库主管	</th>
@@ -356,7 +363,7 @@
                                 <th style="width: 180px">配料单号</th>
                                 <th>厂家</th>
                                 <th>危废名称</th>
-                                <th>危废类别</th>
+                                <th>危废代码</th>
                                 <th>领用数量</th>
                                 <th>主管副总经理</th>
                                 <th>部门仓库主管	</th>

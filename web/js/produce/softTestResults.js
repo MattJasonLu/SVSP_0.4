@@ -324,29 +324,36 @@ function loadPageList() {
     //         array0.push($('.myclass'));
     //     }
     // }
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadSoftTestResultsList",          // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                $('.loader').hide();
-                console.log(result);
-                setPageClone(result);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            } else {
-                console.log(result.message);
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchData();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadSoftTestResultsList",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    $('.loader').hide();
+                    console.log(result);
+                    setPageClone(result);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
-    isSearch = false;
+        });
+        isSearch = false;
+    }
+
 
 
 
@@ -751,7 +758,13 @@ function save() {
     window.location.reload();
 }
 
-
+/**
+ * 审批
+ * @param item
+ */
+function approval() {
+    $("#approval2").modal('show')
+}
 
 //提交
 function setSubmit(item) {

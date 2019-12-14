@@ -13,7 +13,6 @@
     <script src="js/bootstrap/navbar.js"></script>
     <script src="js/time.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/produce/firstPage.js"></script>
     <script src="js/produce/warningManage.js"></script>
 </head>
 <style>
@@ -70,14 +69,15 @@
 
     </div>
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li><a href="todo.html" title="事项">
+            <span class="glyphicon glyphicon-bell"></span>
+        </a>
+        </li>
+        <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
-            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
-                <li><a href="#">待办事项</a></li>
                 <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
@@ -163,10 +163,12 @@
         <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th class="text-center">序号</th>
-                        <th class="text-center">名称</th>
-                        <th class="text-center" style="width: 25%">阈值</th>
-                        <th class="text-center">单位</th>
+                        <th class="text-center" onclick="sortTable(this,'')">序号</th>
+                        <th class="text-center" onclick="sortTable(this,'')">名称</th>
+                        <th class="text-center" onclick="sortTable(this,'')" style="width: 25%">阈值</th>
+                        <th class="text-center" onclick="sortTable(this,'')">单位</th>
+                        <th class="text-center" hidden>编号</th>
+                        <th class="text-center" onclick="sortTable(this,'')">状态</th>
                         <th class="text-center">操作</th>
                     </tr>
                     </thead>
@@ -174,18 +176,22 @@
                     <tr id="clonedTr">
                         <td class="text-center"></td>
                         <td class="text-center"></td>
-                        <td class="text-center">
-                        </td>
                         <td class="text-center"></td>
-                        <td class="text-center hidden"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center" hidden name="id"></td>
+                        <td class="text-center"></td>
                         <td class="text-center">
-                            <a href="#" id="function_-557" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; removeWarning(e);}" title="删除"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-557" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; removeWarning(e);}" title="作废"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-612" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; reStart(e);}" title="启用"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-755" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; showChargeModal(e);}" title="角色配置"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
+                            <a href="#" id="function_-756" onclick="check(this); function check(e){if(!checkAuthority($(e))) return false; showDetailModal(e);}" title="详细配置"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                     <tr id="plusBtn" >
                         <td>
                             <a class="btn btn-default btn-xs" onclick="addNewLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                         </td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -238,6 +244,88 @@
 </div>
 <div id="embed"></div>
 
+<!--角色配置模态框-->
+<div class="modal fade bs-example-modal-lg" id="chargeModal" tabindex="-1" role="dialog" aria-labelledby="chargeModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">角色配置</div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="text-center">
+                            <label>
+                                <input class="checkbox" style="height: 14px;width: 14px" type="checkbox" value="option1" aria-label="..." name="allSel" id="allSel" onclick="allSelect()">
+                            </label>
+                        </th>
+                        <th class="text-center">角色ID</th>
+                        <th class="text-center">角色名称</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody1">
+                    <tr id="cloneTr" onclick="selected(this)">
+                        <td class="text-center">
+                            <label>
+                                <input name="select" style="height: 14px;width: 14px" class="checkbox" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                            </label>
+                        </td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveBtn" onclick="saveRole()">保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--详细配置模态框-->
+<div class="modal fade bs-example-modal-lg" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="chargeModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">角色配置</div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="text-center">序号</th>
+                        <th class="text-center">名称</th>
+                        <th class="text-center">阈值</th>
+                        <th class="text-center">单位</th>
+                        <th class="text-center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    <tr id="cloneTr1">
+                        <td class="text-center"><span name="serialNumber"></span></td>
+                        <td class="text-center"><input name="name"></td>
+                        <td class="text-center"><input name="threshold" placeholder="请输入以天为单位的数值"></td>
+                        <td class="text-center"><input name="unit" placeholder="天"></td>
+                        <td class="text-center">
+                            <a class='btn btn-default btn-xs' onclick='delDetailLine(this);'><span class='glyphicon glyphicon-minus' aria-hidden='true'></span></a>
+                        </td>
+                    </tr>
+                    <tr id="plus">
+                        <td>
+                            <a class="btn btn-default btn-xs" onclick="addNewDetailLine(this);"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                        </td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveDetail()">保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script>
     $('#embed').load('embed/loginLogModal.html');

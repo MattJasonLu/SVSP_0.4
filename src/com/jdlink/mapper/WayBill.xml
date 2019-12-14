@@ -286,4 +286,9 @@
     <delete id="deleteItem" parameterType="String">
         delete from t_pr_waybillitem where wayBillId = #{id};
     </delete>
+
+    <!--状态变为待提交-->
+    <update id="toSubmitWayBill" parameterType="String">
+        update t_pr_waybill set checkStateId=63 where id=#{id}
+    </update>
 </mapper>

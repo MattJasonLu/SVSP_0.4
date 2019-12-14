@@ -347,31 +347,39 @@ function loadPageStocktList() {
     //         array0.push($('.myclass'));
     //     }
     // }
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageStocktList",          // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined && result.status == 'success') {
-                $('.loader').hide();
-                console.log(result);
-                setPageClone(result.stocktList);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            } else {
-                console.log("fail: " + result);
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchStock();
+        window.localStorage.removeItem('approvalId');
+        $('.loader').hide();
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageStocktList",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == 'success') {
+                    $('.loader').hide();
+                    console.log(result);
+                    setPageClone(result.stocktList);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
-    // 设置高级检索的下拉框数据
-   //setSeniorSelectedList();
-    isSearch = false;
+        });
+        // 设置高级检索的下拉框数据
+        //setSeniorSelectedList();
+        isSearch = false;
+    }
+
 }
 
 /**
@@ -1089,6 +1097,7 @@ function adjustStock(item) {
 
 //修改页面的初始
 function loadAdjustStock() {
+    loadNavigationList();   // 动态菜单加载
     //获取申报编号
     $('.selectpicker').selectpicker({
         language: 'zh_CN',
@@ -1368,47 +1377,45 @@ function allSelect1() {
     else $("input[name='blankCheckbox1']").prop('checked', false);
 }//提交
 
+function submitStock(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "submitStock",              // url
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {
+            'stockId': id
+        },
+        success: function (result) {
+            if (result != undefined && result.status == "success") {
+            } else {
+                // alert(result.message)
+            }
+        },
+        error: function (result) {
+            alert("服务器异常！");
+            console.log("error: " + result);
+        }
+    });
+}
 function contractSubmit() {
+    initSubmitFName(submitStock.name);
     //在此提交
     var items = $("input[name='blankCheckbox1']:checked");//判断复选框是否选中
     if (items.length > 0) {
         if(confirm("确认提交?")){
             //点击确定后操作
-            function getContractById(id) {
-                $.ajax({
-                    type: "POST",                       // 方法类型
-                    url: "submitStock",              // url
-                    async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                    dataType: "json",
-                    data: {
-                        'stockId': id
-                    },
-                    success: function (result) {
-                        if (result != undefined && result.status == "success") {
-                        } else {
-                            alert(result.message)
-                        }
-                    },
-                    error: function (result) {
-                        alert("服务器异常！");
-                        console.log("error: " + result);
-                    }
-                });
-            }
-
             items.each(function () {//遍历
                 var id = getContractId1(this);//获得合同编号
-                //console.log(id);
-                getContractById(id);
-
+                publicSubmit(id, getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
             });
-            alert("提交成功!");
-            location.reload();
+            // alert("提交成功!");
+
         }
 
     }
     else {
-        alert("请勾选要提交的合同！")
+        alert("请勾选要提交的数据！")
     }
 }
 
@@ -1432,7 +1439,8 @@ function cancel(item) {
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert("作废成功！");
-                    location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
                 else {
                     alert("作废失败")
@@ -1660,185 +1668,185 @@ function addWastesNewLine() {
 
 //审批
 function approval(item) {
-    //出现模态框和查看一个效果
-    //审批显示 打印隐藏 驳回显示
-    $('#btn').show();//审批显示
-    $('#print').hide();//打印隐藏
-    $('#back').show();
-    //完善隐藏
-    $('#perfect').hide();//打印隐藏
-  var   stockId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getStockById",                   // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        data: {
-            'stockId': stockId
-        },
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result.stock);
-                var obj = result.stock;
-                //1赋值
-                //产废单位联系人
-                if (obj.selfEmployed == false) {//说明不是自运单位
-
-                    //根据运输供应商赋值
-                    $.ajax({
-                        type: "POST",                       // 方法类型
-                        url: "getSupplierListById",                  // url
-                        data: {'supplierId': obj.transport},
-                        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
-                        dataType: "json",
-                        //contentType: "application/json; charset=utf-8",
-                        success: function (result) {
-                            if (result != undefined && result.status == "success") {
-                                //console.log(result);
-                                var obj = eval(result.supplier);
-                                console.log(obj);
-                                if (obj != null) {
-                                    $('#transport').text(obj.companyName);//运输公司
-
-                                }
-
-                            }
-                            else {
-                                alert(result.message);
-                            }
-                        },
-                        error: function (result) {
-                            alert("服务器异常！");
-                        }
-                    });
-
-
-                    $('#plateNumber').text(obj.plateNumber);//车牌号
-                    $('#transportTelephone').text(obj.transportTelephone);//运输公司联系方式
-                }
-                if (obj.selfEmployed == true) {//说明不是自运单位
-                    $('#transport').text("");//运输公司
-                    $('#plateNumber').text("");//车牌号
-                    $('#transportTelephone').text("");//运输公司联系方式
-                }
-                //赋值产废单位联系人
-                if (obj.client != null) {
-                    $('#proContactName').text(obj.client.contactName);
-                }
-                if (obj.client != null) {
-                    if (obj.client.phone != '') {
-                        //赋值产废单位电话
-                        $('#proTelephone').text(obj.client.phone);
-                    }
-                    else {
-                        $('#proTelephone').text(obj.client.mobile);
-                    }
-
-                }
-
-                //赋值是否自运单位
-                $('#selfEmployed').prop('checked', obj.selfEmployed);
-                //产废公司
-                if (obj.client != null) {
-                    $('#proWasteCompany').text(obj.client.companyName);
-                }
-                //库容
-                if (obj.client != null) {
-                    $('#capacity').text(obj.client.capacity.toFixed(2));
-                }
-                if(obj.stockItemList!=null){
-                    var tr = $("#cloneTr1");
-
-                    tr.children('td').eq(6).html("")
-                    tr.children('td').eq(7).html("")
-                    tr.siblings().remove();
-                    $.each(obj.stockItemList, function (index, item) {
-                        var obj=eval(item);
-                        // 克隆tr，每次遍历都可以产生新的tr
-                        var clonedTr = tr.clone();
-                        clonedTr.show();
-                        // 循环遍历cloneTr的每一个td元素，并赋值
-                        clonedTr.children("td").each(function (inner_index) {
-                            //1生成领料单号
-                            var obj = eval(item);
-                            // 根据索引为部分td赋值
-                            switch (inner_index) {
-                                // 序号
-                                case (0):
-                                    $(this).html(index+1);
-                                    break;
-                                // 危险废物的名称
-                                case (1):
-                                    $(this).html(obj.wastesName);
-                                    break;
-                                // 危废编码
-                                case (2):
-                                    $(this).html(obj.wastesCode);
-                                    break;
-                                // 数量(公斤)
-                                case (3):
-                                    $(this).html(obj.number.toFixed(3));
-                                    break;
-                                // 成分
-                                case (4):
-
-                                    $(this).html(obj.content);
-                                    break;
-                                // 备注
-                                case (5):
-                                    $(this).html(obj.remarks);
-                                    break;
-                                //进料方式
-                                case (6):
-
-                                    if(obj.handleCategoryItem!=null){
-                                        $(this).html(obj.handleCategoryItem.dictionaryItemName)
-                                    }
-
-
-                                    break;
-                                //处置意见
-                                case (7):
-                                    $(this).html(obj.disposalAdvice);
-                                    break;
-                                //明细编号
-                                case (8):
-                                    $(this).html(obj.id);
-                                    break;
-                            }
-                        });
-                        // 把克隆好的tr追加到原来的tr前面
-                        clonedTr.removeAttr("id");
-                        clonedTr.insertBefore(tr);
-
-
-                    });
-                    // 隐藏无数据的tr
-                    tr.hide();
-                    tr.removeAttr('class');
-
-                }
-
-            } else {
-                alert(result.message);
-                $("#modal3_contactName").text("");
-                $("#modal3_contractState").text("");
-                $("#modal3_contractVersion").text("");
-                $("#modal3_companyName").text("");
-                $("#modal3_contactName").text("");
-                $("#modal3_contractId").text("");
-                $("#modal3_beginTime").text("");
-                $("#modal3_endTime").text("");
-                $("#modal3_area").text("");
-                $("#modal3_telephone").text("");
-                $("#modal3_order").text("");
-            }
-        },
-        error: function (result) {
-            console.log(result);
-        }
-    });
-    $('#stockInfoForm').modal('show');//出现第一个模态框
+  //   //出现模态框和查看一个效果
+  //   //审批显示 打印隐藏 驳回显示
+  //   $('#btn').show();//审批显示
+  //   $('#print').hide();//打印隐藏
+  //   $('#back').show();
+  //   //完善隐藏
+  //   $('#perfect').hide();//打印隐藏
+  // var   stockId = item.parentElement.parentElement.firstElementChild.nextElementSibling.innerHTML;
+  //   $.ajax({
+  //       type: "POST",                       // 方法类型
+  //       url: "getStockById",                   // url
+  //       async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+  //       dataType: "json",
+  //       data: {
+  //           'stockId': stockId
+  //       },
+  //       success: function (result) {
+  //           if (result != undefined && result.status == "success") {
+  //               console.log(result.stock);
+  //               var obj = result.stock;
+  //               //1赋值
+  //               //产废单位联系人
+  //               if (obj.selfEmployed == false) {//说明不是自运单位
+  //
+  //                   //根据运输供应商赋值
+  //                   $.ajax({
+  //                       type: "POST",                       // 方法类型
+  //                       url: "getSupplierListById",                  // url
+  //                       data: {'supplierId': obj.transport},
+  //                       async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+  //                       dataType: "json",
+  //                       //contentType: "application/json; charset=utf-8",
+  //                       success: function (result) {
+  //                           if (result != undefined && result.status == "success") {
+  //                               //console.log(result);
+  //                               var obj = eval(result.supplier);
+  //                               console.log(obj);
+  //                               if (obj != null) {
+  //                                   $('#transport').text(obj.companyName);//运输公司
+  //
+  //                               }
+  //
+  //                           }
+  //                           else {
+  //                               alert(result.message);
+  //                           }
+  //                       },
+  //                       error: function (result) {
+  //                           alert("服务器异常！");
+  //                       }
+  //                   });
+  //
+  //
+  //                   $('#plateNumber').text(obj.plateNumber);//车牌号
+  //                   $('#transportTelephone').text(obj.transportTelephone);//运输公司联系方式
+  //               }
+  //               if (obj.selfEmployed == true) {//说明不是自运单位
+  //                   $('#transport').text("");//运输公司
+  //                   $('#plateNumber').text("");//车牌号
+  //                   $('#transportTelephone').text("");//运输公司联系方式
+  //               }
+  //               //赋值产废单位联系人
+  //               if (obj.client != null) {
+  //                   $('#proContactName').text(obj.client.contactName);
+  //               }
+  //               if (obj.client != null) {
+  //                   if (obj.client.phone != '') {
+  //                       //赋值产废单位电话
+  //                       $('#proTelephone').text(obj.client.phone);
+  //                   }
+  //                   else {
+  //                       $('#proTelephone').text(obj.client.mobile);
+  //                   }
+  //
+  //               }
+  //
+  //               //赋值是否自运单位
+  //               $('#selfEmployed').prop('checked', obj.selfEmployed);
+  //               //产废公司
+  //               if (obj.client != null) {
+  //                   $('#proWasteCompany').text(obj.client.companyName);
+  //               }
+  //               //库容
+  //               if (obj.client != null) {
+  //                   $('#capacity').text(obj.client.capacity.toFixed(2));
+  //               }
+  //               if(obj.stockItemList!=null){
+  //                   var tr = $("#cloneTr1");
+  //
+  //                   tr.children('td').eq(6).html("")
+  //                   tr.children('td').eq(7).html("")
+  //                   tr.siblings().remove();
+  //                   $.each(obj.stockItemList, function (index, item) {
+  //                       var obj=eval(item);
+  //                       // 克隆tr，每次遍历都可以产生新的tr
+  //                       var clonedTr = tr.clone();
+  //                       clonedTr.show();
+  //                       // 循环遍历cloneTr的每一个td元素，并赋值
+  //                       clonedTr.children("td").each(function (inner_index) {
+  //                           //1生成领料单号
+  //                           var obj = eval(item);
+  //                           // 根据索引为部分td赋值
+  //                           switch (inner_index) {
+  //                               // 序号
+  //                               case (0):
+  //                                   $(this).html(index+1);
+  //                                   break;
+  //                               // 危险废物的名称
+  //                               case (1):
+  //                                   $(this).html(obj.wastesName);
+  //                                   break;
+  //                               // 危废编码
+  //                               case (2):
+  //                                   $(this).html(obj.wastesCode);
+  //                                   break;
+  //                               // 数量(公斤)
+  //                               case (3):
+  //                                   $(this).html(obj.number.toFixed(3));
+  //                                   break;
+  //                               // 成分
+  //                               case (4):
+  //
+  //                                   $(this).html(obj.content);
+  //                                   break;
+  //                               // 备注
+  //                               case (5):
+  //                                   $(this).html(obj.remarks);
+  //                                   break;
+  //                               //进料方式
+  //                               case (6):
+  //
+  //                                   if(obj.handleCategoryItem!=null){
+  //                                       $(this).html(obj.handleCategoryItem.dictionaryItemName)
+  //                                   }
+  //
+  //
+  //                                   break;
+  //                               //处置意见
+  //                               case (7):
+  //                                   $(this).html(obj.disposalAdvice);
+  //                                   break;
+  //                               //明细编号
+  //                               case (8):
+  //                                   $(this).html(obj.id);
+  //                                   break;
+  //                           }
+  //                       });
+  //                       // 把克隆好的tr追加到原来的tr前面
+  //                       clonedTr.removeAttr("id");
+  //                       clonedTr.insertBefore(tr);
+  //
+  //
+  //                   });
+  //                   // 隐藏无数据的tr
+  //                   tr.hide();
+  //                   tr.removeAttr('class');
+  //
+  //               }
+  //
+  //           } else {
+  //               alert(result.message);
+  //               $("#modal3_contactName").text("");
+  //               $("#modal3_contractState").text("");
+  //               $("#modal3_contractVersion").text("");
+  //               $("#modal3_companyName").text("");
+  //               $("#modal3_contactName").text("");
+  //               $("#modal3_contractId").text("");
+  //               $("#modal3_beginTime").text("");
+  //               $("#modal3_endTime").text("");
+  //               $("#modal3_area").text("");
+  //               $("#modal3_telephone").text("");
+  //               $("#modal3_order").text("");
+  //           }
+  //       },
+  //       error: function (result) {
+  //           console.log(result);
+  //       }
+  //   });
+    $('#approval').modal('show');//出现第一个模态框
 }
 
 //审批界面和驳回界面
@@ -1851,7 +1859,7 @@ function showBack() {
 }
 
 //把按钮功能分出来做这个是审批
-function confirm1() {
+function confirm1(id) {
     opinion = $('#opinion').val();
     //console.log(opinion);
     //1获取文本框的值
@@ -1860,7 +1868,7 @@ function confirm1() {
         url: "approvalStock",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'stockId': stockId, 'opinion': opinion},
+        data: {'stockId': id, 'opinion': opinion},
         success: function (result) {
             if (result != undefined && result.status == "success") {
                 alert(result.message);
@@ -1878,7 +1886,7 @@ function confirm1() {
 }
 
 //把按钮功能分出来做这个是驳回
-function back1() {
+function back1(id) {
     backContent = $('#backContent').val();
     //设置状态驳回
     $.ajax({
@@ -1886,10 +1894,10 @@ function back1() {
         url: "backStock",
         async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
         dataType: "json",
-        data: {'stockId': stockId, 'backContent': backContent},
+        data: {'stockId': id, 'backContent': backContent},
         success: function (result) {
             if (result != undefined && result.status == "success") {
-                alert(result.message);
+                // alert(result.message);
             }
             else {
                 alert(result.message)
@@ -2284,8 +2292,10 @@ function showPerfect() {
                 if (result != undefined && result.status == "success") {
                     index++;
                     if(index==$('.myclass2').length){
-                        alert(result.message)
-                        window.location.reload()
+                        alert(result.message);
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
+                        $('#stockInfoForm').modal('hide');
                     }
 
                 }
@@ -2304,4 +2314,52 @@ function showPerfect() {
 
 
 
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(submitStock.name);
+    initApprovalFName(confirm1.name);
+    initBakcFName(back1.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
+}
+
+//打印
+function print() {
+    //打印模态框
+    $("#footer").hide();
+    $("#stockInfoForm").printThis({
+        // debug: false,             // 调试模式下打印文本的渲染状态
+        // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        // importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        // copyTagClasses: true
+    });
 }

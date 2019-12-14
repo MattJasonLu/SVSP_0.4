@@ -4,6 +4,7 @@ var oldPassword = "";
  * 显示信息
  */
 function viewPersonalInformation() {
+    loadNavigationList();    // 动态菜单加载
     $.ajax({
         type: "POST",                           // 方法类型
         url: "getCurrentUserInfo",            // url
@@ -11,14 +12,16 @@ function viewPersonalInformation() {
         dataType: "json",
         success: function (result) {
             if (result != undefined) {
-                console.log(result);
+               // console.log(result);
                 var data = result.data;
                 $("#username").text(data.username);//index + 1
                 $("#department").text(data.department);
                 $("#company").text(data.company);
+                $("#email").text(data.email);
                 user.username = data.username;
                 user.department = data.department;
                 user.company = data.company;
+                user.email = data.email;
             } else {
                 console.log(result.message);
             }
@@ -87,8 +90,6 @@ function validationOld(item){
 function confirmChange() {
     var newPassword1 = $("#newPassword1").val();
     var newPassword = $("#newPassword").val();
-    console.log(newPassword1);
-    console.log(newPassword);
     if (newPassword1 != newPassword) {
         alert("两次密码不一致，请重新输入!");
         $("#newPassword1").val("");  // 清空输入框

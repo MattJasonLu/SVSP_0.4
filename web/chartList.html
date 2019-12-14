@@ -5,7 +5,7 @@
     <meta name="Generator" content="EditPlus®">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>辅料/备件库存</title>
+    <title>统计图表</title>
     <script src="js/jquery/2.0.0/jquery.min.js"></script>
     <link href="css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap/3.3.6/bootstrap.min.js"></script>
@@ -66,15 +66,15 @@
         </div><!--/.nav-collapse -->
     </div>
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-        <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+        <li><a href="todo.html" title="事项">
+            <span class="glyphicon glyphicon-bell"></span>
+        </a>
+        </li>
+        <li><a href="#" title="邮件" ondblclick="emailSettings()" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
         <li class="dropdown">
-            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-               aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
+            <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="personalInformation.html">个人信息</a></li>
-                <li><a href="#">待办事项</a></li>
-                <li><a href="#" onclick="showLog();">登录日志</a></li>
                 <li><a href="admin.html">注销</a></li>
             </ul>
         </li>
@@ -149,107 +149,105 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label" style="margin-left: -1%">日期范围</label>
                 <div class="input-group col-md-6">
-                    <input type="date" class="input-sm form-control" id="search-startDate" title=""
-                           onkeydown="enterSearch()"/>
+                    <input type="date" class="input-sm form-control" style="height: 34px" id="search-startDate" title="" onkeydown="enterSearch()"/>
                     <span class="input-group-addon">-</span>
-                    <input type="date" class="input-sm form-control" id="search-endDate" title=""
-                           onkeydown="enterSearch()"/>
+                    <input type="date" class="input-sm form-control" style="height: 34px" id="search-endDate" title="" onkeydown="enterSearch()"/>
                     <span class="input-group-btn" onclick="search();">
-                        <a class="btn btn-default" ><span
-                                class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
+                        <a class="btn btn-default" ><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
                     </span>
                 </div>
             </div>
         </div>
-        <div class="main" style="overflow-y: scroll">
-            <div id="layer02" class="layer" style="height:15%;">
-                <div id="layer02_01" style="width:20%;">
+        <div class="main" style="overflow-y: auto">
+            <div id="layer02" class="layer box-shadow" style="height:15%;width: 97.5%">
+                <!--<div style="background-color:rgba(0,0,0,.3);"></div>-->
+                <div id="layer02_01" style="width:16%;">
                     <div class="layer02-data">
-                        <span style="font-size:26px;" id="in1" href="warehouseManage.html"></span>
-                        <span style="font-size:16px;">吨</span>
+                        <span id="in1" href="warehouseManage.html"></span>
+                        <span>吨</span>
                     </div>
                     <canvas width="200" height="100"></canvas>
                 </div>
-                <div id="layer02_02" style="width:20%;">
+                <div id="layer02_02" style="width:16%;">
                     <div class="layer02-data">
-                        <span style="font-size:26px;" id="in2" href="ingredientsInDetial.html"></span>
-                        <span style="font-size:16px;"></span>
+                        <span id="in2" href="ingredientsInDetial.html"></span>
+                        <span>吨</span>
                     </div>
                     <canvas width="200" height="100"></canvas>
                 </div>
-                <div id="layer02_03" style="width:21%;">
+                <div id="layer02_03" style="width:16%;">
                     <div class="layer02-data">
-                        <span style="font-size:26px;" id="in3" href="secondWarehouseManage.html"></span>
-                        <span style="font-size:16px;">吨</span>
+                        <span id="in3" href="secondWarehouseManage.html"></span>
+                        <span>吨</span>
                     </div>
                     <canvas width="200" height="100"></canvas>
                 </div>
-                <div id="layer02_04" style="width:12%;">
+                <div id="layer02_04" style="width:16%;">
                     <div class="layer02-data">
-                        <span style="font-size:26px;" id="out1" href="warehouseManageOut.html"></span>
-                        <span style="font-size:16px;">吨</span>
+                        <span id="out1" href="warehouseManageOut.html"></span>
+                        <span>吨</span>
                     </div>
-                    <canvas width="120" height="100"></canvas>
+                    <canvas width="200" height="100"></canvas>
                 </div>
-                <div id="layer02_05" style="width:12%;">
+                <div id="layer02_05" style="width:16%;">
                     <div class="layer02-data">
-                        <span style="font-size:26px;" id="out2" href="ingredientsOutDetail.html"></span>
-                        <span style="font-size:16px;"></span>
+                        <span id="out2" href="ingredientsOutDetail.html"></span>
+                        <span>吨</span>
                     </div>
-                    <canvas width="120" height="100"></canvas>
+                    <canvas width="200" height="100"></canvas>
                 </div>
-                <div id="layer02_06" style="width:12%;">
+                <div id="layer02_06" style="width:16%;">
                     <div class="layer02-data">
-                        <span style="font-size:26px;" id="out3" href="secondaryOutbound.html"></span>
-                        <span style="font-size:16px;">吨</span>
+                        <span id="out3" href="secondaryOutbound.html"></span>
+                        <span>吨</span>
                     </div>
-                    <canvas width="120" height="100"></canvas>
+                    <canvas width="200" height="100"></canvas>
                 </div>
             </div>
             <div id="layer03" class="layer" style="height:40%;">
-                <div id="layer03_left" style="width:48%;" class="layer03-panel">
+                <div id="layer03_left" style="width:48%;" class="layer03-panel box-shadow">
                     <div id="layer03_left_label01" class="layer03-left-label" href="clientBackup.html">产废单位城市分布</div>
-                    <div id="layer03_left_01" class="layer03-left-chart" style="width:16%;">
+                    <div id="layer03_left_01" class="layer03-left-chart" style="width:30%;">
                         <canvas width="100" height="200" style="margin:30px 0 0 30px;"></canvas>
                     </div>
-
-                    <div id="layer03_left_02" class="layer03-left-chart" style="width:80%;"></div>
+                    <div id="layer03_left_02" class="layer03-left-chart" style="width:70%;"></div>
                 </div>
-                <div id="layer03_right" style="width:40%;" class="layer03-panel">
-                    <div id="layer03_right_label">出入库百分比</div>
 
+                <div id="layer03_right" style="width:48%;" class="layer03-panel box-shadow">
+                    <div id="layer03_right_label">出入库百分比</div>
                 </div>
             </div>
             <div id="layer04" class="layer" style="height:40%;">
-                <div id="layer04_right" class="layer04-panel">
+                <div id="layer04_right" class="layer04-panel box-shadow" style="width:48%;">
                     <div id="layer04_right_label" class="layer04-panel-label">
-                        <span>危废数量变化图</span>
+                        <span style="margin-left: 15%">危废数量变化图</span>
                     </div>
                     <div id="layer04_right_chart" class="layer04-panel-chart"></div>
                 </div>
-                <div id="layer05_right" class="layer04-panel">
+                <div id="layer05_right" class="layer04-panel box-shadow" style="width:48%;">
                     <div id="layer05_right_label" class="layer04-panel-label">
-                        <span>次生数量变化图</span>
+                        <span style="margin-left: 15%">次生数量变化图</span>
                     </div>
                     <div id="layer05_right_chart" class="layer04-panel-chart"></div>
                 </div>
             </div>
             <div id="layer05" class="layer" style="height:40%;">
-                <div id="layer06_right" class="layer04-panel">
+                <div id="layer06_right" class="layer04-panel box-shadow" style="width:48%;">
                     <div id="layer06_right_label" class="layer04-panel-label">
-                        <span>辅料数量变化图</span>
+                        <span style="margin-left: 15%">辅料数量变化图</span>
                     </div>
                     <div id="layer06_right_chart" class="layer04-panel-chart"></div>
                 </div>
                 <!--<div id="layer07_right" class="">-->
                     <!--<div id="layer07_right_label" class="">-->
-                        <!--<span>合同签约量柱状图</span>-->
+                        <!--<span style="margin-left: 15%">合同签约量柱状图</span>-->
                     <!--</div>-->
                     <!--<div id="layer07_right_bar_graph" class=""></div>-->
                 <!--</div>-->
             </div>
             <!--柱状图-->
-            <div id="layer08_right_bar_graph" style="height:60%;width: 100%">
+            <div id="layer06" class="layer box-shadow" style="height:40%;width: 97.5%;margin-top: 5%;margin-bottom: 20%">
+                <div id="layer08_right_bar_graph" style="height:98%;width: 95%;"></div>
             </div>
         </div>
     </div>
@@ -259,6 +257,15 @@
 
 </script>
 <style type="text/css">
+    html{
+        min-height: 100%
+    }
+    .box-shadow{
+        border-radius: 10px;
+        border:1px solid #aeaeae;
+        margin: 10px;
+        box-shadow: 0 0 10px #107093;
+    }
     body {
         background-size: 100% 100%;
         overflow: hidden;

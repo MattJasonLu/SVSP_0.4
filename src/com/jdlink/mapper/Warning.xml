@@ -2,12 +2,42 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdlink.mapper.WarningMapper" >
+<mapper namespace="com.jdlink.mapper.WarningMapper">
+
+    <!--预警详细RM-->
+    <resultMap id="WarningDetailRM" type="Warning" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="warningName" column="name"/>
+        <result property="warningThreshold" column="threshold"/>
+        <result property="warningUnit" column="unit"/>
+    </resultMap>
 
     <!--添加数据-->
     <insert id="add" parameterType="Warning">
-        insert into t_warning (warningName, warningThreshold, warningUnit,createTime)
-        values (#{warningName},#{warningThreshold},#{warningUnit},NOW());
+        insert into t_warning (warningName, warningThreshold, warningUnit,createTime,useable)
+        values (#{warningName},#{warningThreshold},#{warningUnit},NOW(),1);
+    </insert>
+
+    <!--新增角色ID配置-->
+    <insert id="addRoleIdList" parameterType="Warning">
+        <if test="roleIdList != null and roleIdList.size() > 0">
+            <foreach collection="roleIdList" item="roleId" index="index">
+                insert into t_warning_role (a_id, role_id, modify_time)
+                values (#{id},#{roleId},NOW());
+            </foreach>
+            update t_warning set modify_time=NOW(),modifier=#{modifier} where id=#{id};
+        </if>
+    </insert>
+
+    <!--新增预警详细信息-->
+    <insert id="addDetailList" parameterType="Warning">
+        <if test="warningList != null and warningList.size() > 0">
+            <foreach collection="warningList" item="item" index="index">
+                insert into t_warning_detail (a_id,name,threshold,unit,modify_time)
+                values (#{id},#{item.warningName},#{item.warningThreshold},#{item.warningUnit},NOW());
+            </foreach>
+            update t_warning set modify_time=NOW(),modifier=#{modifier} where id=#{id};
+        </if>
     </insert>
 
     <!--更新数据-->
@@ -16,29 +46,28 @@
         warningUnit=#{warningUnit} where id=#{id};
     </update>
 
-  <!--根据编号获取阈值-->
-    <select id="getThresholdById" resultType="float" parameterType="int">
-        select warningThreshold from t_warning where  id=#{id}
-    </select>
-
-    <!--初始化页面加载-->
-    <select id="loadWarningList" resultType="Warning">
-        select  * from t_warning  order  by createTime desc
-        <if test="start != null and count != null">
-            limit #{start}, #{count}
-        </if>
-    </select>
-
     <!--删除-->
     <delete id="deleteWarning" parameterType="int">
-        delete from t_warning where id=#{id};
+         update t_warning set useable=0 where id=#{id}
     </delete>
+
+    <delete id="deleteRoleListByAid" parameterType="int">
+        delete from t_warning_role where a_id=#{id};
+    </delete>
+
+    <delete id="deleteDetailByAid" parameterType="int">
+        delete from t_warning_detail where a_id=#{id};
+    </delete>
+
+    <!--启用-->
+    <update id="reStartWarning" parameterType="int">
+      update t_warning set useable=1 where id=#{id}
+    </update>
 
     <!--总数-->
     <select id="totalWarningRecord" resultType="int">
         select count(*) from t_warning;
     </select>
-
 
     <!--查询-->
     <select id="searchWaring" parameterType="Warning" resultType="Warning">
@@ -60,7 +89,7 @@
             </if>
         </where>
         order by createTime desc
-        <if test="page != null and page.start != null and page.count != null">
+        <if test="page != null and page.start != null and page.count != null and page.count != 0">
             limit #{page.start}, #{page.count}
         </if>
     </select>
@@ -84,6 +113,30 @@
                 and warningUnit = #{warningUnit}
             </if>
         </where>
-
     </select>
+
+    <!--根据编号获取阈值-->
+    <select id="getThresholdById" resultType="float" parameterType="int">
+        select warningThreshold from t_warning where  id=#{id}
+    </select>
+
+    <!--初始化页面加载-->
+    <select id="loadWarningList" resultType="Warning">
+        select * from t_warning order by createTime desc
+        <if test="start != null and count != null">
+            limit #{start}, #{count}
+        </if>
+    </select>
+
+    <!--根据外键获取预警详细信息-->
+    <select id="getWarningDetailByAid" parameterType="int" resultMap="WarningDetailRM">
+        select * from t_warning_detail where a_id=#{id} order by name;
+    </select>
+
+
+    <select id="getCountByRoleIdAndAid" resultType="int">
+        select count(*) from t_warning_role where a_id=#{aId} and role_id=#{roleId}
+    </select>
+
+
 </mapper>

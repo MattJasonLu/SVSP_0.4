@@ -67,4 +67,14 @@ public class TransferDraftServiceImpl implements TransferDraftService {
     public int searchCount(TransferDraft transferDraft) {
         return transferDraftMapper.searchCount(transferDraft);
     }
+
+    @Override
+    public void setStateToApproval(String id) {
+        transferDraftMapper.setStateToApproval(id);
+    }
+
+    @Override
+    public void setStateToBack(String id) {
+        transferDraftMapper.setStateToBack(id);
+    }
 }

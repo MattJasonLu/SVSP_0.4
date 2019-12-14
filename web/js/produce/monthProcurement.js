@@ -502,7 +502,7 @@ function saveMonth() {
 }
 //加载月度采购申请表数据列表
 function getMontnProcurement() {
-    $('.loader').show();
+
     loadNavigationList();   // 设置动态菜单
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
@@ -523,30 +523,38 @@ function getMontnProcurement() {
             array0.push($('.myclass'));
         }
     }
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "getProcurementList",
-        data: JSON.stringify(page),// url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success:function (result) {
-            if (result != undefined && result.status == "success"){
-                $('.loader').hide();
-               // console.log(result)
-                //设置月度采购申请表数据
-                setPageClone(result);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            }
-            else {
-                alert(result.message);
-            }
-        },
-        error:function (result) {
-            alert("服务器异常！")
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchProcurement();
+        window.localStorage.removeItem('approvalId');
+        $('.loader').hide();
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "getProcurementList",
+            data: JSON.stringify(page),// url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success:function (result) {
+                if (result != undefined && result.status == "success"){
+                    $('.loader').hide();
+                    // console.log(result)
+                    //设置月度采购申请表数据
+                    setPageClone(result);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error:function (result) {
+                alert("服务器异常！")
 
-        }
-    });
+            }
+        });
+    }
+
     //设置物资类别下拉框
     $.ajax({
         type: "POST",                       // 方法类型
@@ -674,16 +682,16 @@ function setMonthProcurementList(result) {
     tr.removeAttr('class');
 }
 //审批
-function approval(item) {
-    if(confirm("确定审批?")) {
+function approval1(id) {
+
         //点击确定后操作
-        var receiptNumber = $(item).parent().parent().children('td').eq(0).text();
+
         $.ajax({
             type: "POST",                       // 方法类型
             url: "setProcurementListSubmit",          // url
             async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
-            data: {'receiptNumber': receiptNumber},
+            data: {'receiptNumber': id},
             success: function (result) {
                 if (result != undefined && result.status == "success") {
                     alert(result.message);
@@ -697,9 +705,74 @@ function approval(item) {
                 alert("服务器异常!");
             }
         });
-    }
+
 
 }
+
+/*驳回*/
+function back(id) {
+
+        //点击确定后操作
+
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "setProcurementListBack",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            dataType: "json",
+            data: {'receiptNumber': id},
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    // alert(result.message);
+                    // window.location.reload();
+                }
+                else {
+                    alert(result.message);
+                }
+            },
+            error: function (result) {
+                alert("服务器异常!");
+            }
+        });
+
+
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(submitProcurementListById.name);
+    initApprovalFName(approval1.name);
+    initBakcFName(back.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
+}
+
+
 //提交
 function submit(item) {
     if(confirm("确定提交?")) {
@@ -740,7 +813,8 @@ function cancel(item) {
             success:function (result) {
                 if (result != undefined && result.status == "success"){
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
                 else {
                     alert(result.message);
@@ -1536,33 +1610,54 @@ function downloadModal() {
     }
 }
 
+
 //提交
 function setSubmit(item) {
+    initSubmitFName(submitProcurementListById.name);
     var receiptNumber=$(item).parent().parent().children('td').eq(1).text();
     if(confirm("确认提交?")){
+        publicSubmit(receiptNumber,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
         //点击确定后操作
-        $.ajax({
-            type: "POST",                       // 方法类型
-            url: "submitProcurementListById",          // url
-            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-            dataType: "json",
-            data:{'receiptNumber':receiptNumber},
-            //contentType: 'application/json;charset=utf-8',
-            success:function (result) {
-                if (result != undefined && result.status == "success"){
-                    alert(result.message)
-                    window.location.reload()
-                }
-            },
-            error:function (result) {
-                
-            }
-        })
+        // $.ajax({
+        //     type: "POST",                       // 方法类型
+        //     url: "submitProcurementListById",          // url
+        //     async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        //     dataType: "json",
+        //     data:{'receiptNumber':receiptNumber},
+        //     //contentType: 'application/json;charset=utf-8',
+        //     success:function (result) {
+        //         if (result != undefined && result.status == "success"){
+        //             alert(result.message)
+        //             window.location.reload()
+        //         }
+        //     },
+        //     error:function (result) {
+        //
+        //     }
+        // })
     }
 
 
 }
+function submitProcurementListById(id) {
+    $.ajax({
+        type: "POST",                       // 方法类型
+        url: "submitProcurementListById",          // url
+        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data:{'receiptNumber':id},
+        //contentType: 'application/json;charset=utf-8',
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                alert(result.message)
+                window.location.reload()
+            }
+        },
+        error:function (result) {
 
+        }
+    })
+}
 //根据编号查询规格
 function findSpecification(item) {
     var id=$(item).selectpicker('val');
@@ -1655,4 +1750,18 @@ function downLoadFile(item) {
         alert("未上传文件");
         // window.location.reload()
     }
+}
+
+
+//打印
+function print() {
+    //打印模态框
+    $("#footer").hide();
+    $("#appointModal2").printThis({
+        // debug: false,             // 调试模式下打印文本的渲染状态
+        // importCSS: false,       // 为打印文本引入外部样式link标签 ["<link rel='stylesheet' href='/static/jquery/forieprint.css' media='print'>","",""]
+        // importStyle: false,      // 为打印把文本书写内部样式 ["<style>#ceshi{}</style>","",""]
+        // printDelay: 333,      // 布局完打印页面之后与真正执行打印功能中间的间隔
+        // copyTagClasses: true
+    });
 }

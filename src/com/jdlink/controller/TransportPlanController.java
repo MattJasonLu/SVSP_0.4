@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
-
+import java.util.Map;
 /**
  * Created by matt on 2018/8/9.
  * DoubleClickTo 666
@@ -387,6 +387,23 @@ public class TransportPlanController {
             e.printStackTrace();
             res.put("status", "fail");
             res.put("message", "作废失败");
+        }
+        return res.toString();
+    }
+
+    /*驳回*/
+    @RequestMapping("setTransportPlanBack")
+    @ResponseBody
+    public String setTransportPlanBack(String id) {
+        JSONObject res = new JSONObject();
+        try {
+            transportPlanService.setStateBack(id);
+            res.put("status", "success");
+            res.put("message", "驳回成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.put("status", "fail");
+            res.put("message", "驳回失败");
         }
         return res.toString();
     }

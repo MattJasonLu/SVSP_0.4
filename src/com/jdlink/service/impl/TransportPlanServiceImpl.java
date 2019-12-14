@@ -77,4 +77,9 @@ public class TransportPlanServiceImpl implements TransportPlanService {
     public int searchCount(TransportPlan transportPlan) {
         return transportPlanMapper.searchCount(transportPlan);
     }
+
+    @Override
+    public void setStateBack(String id) {
+        transportPlanMapper.setStateBack(id);
+    }
 }

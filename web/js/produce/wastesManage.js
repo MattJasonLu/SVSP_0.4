@@ -518,8 +518,6 @@ function loadWastesManage() {
             console.log("error: " + result);
         }
     });
-
-
     isSearch = false;
 }
 
@@ -654,7 +652,8 @@ function removeWastesManger(item) {
             success:function (result) {
                 if (result != undefined && result.status == "success"){
                     alert(result.message)
-                    window.location.reload()
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 }
                 else {
                     alert(result.message)
@@ -742,7 +741,7 @@ function edit(item) {
         }
     });
 
-    $("#modalId2").modal('show')
+    $("#modalId2").modal('show');
 
     var id=$(item).parent().prev().html();
 
@@ -804,8 +803,10 @@ function adjust() {
         contentType: 'application/json;charset=utf-8',
         success:function (result) {
             if (result != undefined && result.status == "success"){
-                alert(result.message)
-                window.location.reload()
+                alert(result.message);
+                $("#pageNumber").val(currentPage);   // 设置当前页页数
+                inputSwitchPage();  // 跳转当前页
+                $("#modalId2").modal('hide');
             }
             else {
                 alert(result.message)

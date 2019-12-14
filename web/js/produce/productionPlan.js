@@ -292,30 +292,36 @@ function loadPageProductionPlanList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageProductionPlanList",          // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result != undefined && result.status == "success") {
-                console.log(result);
-                setPageClone(result.data);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            } else {
-                console.log(result.message);
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchProductionPlan();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageProductionPlanList",          // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result != undefined && result.status == "success") {
+                    console.log(result);
+                    setPageClone(result.data);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                } else {
+                    console.log(result.message);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
+        });
+        isSearch = false;
+    }
     // 设置高级检索的下拉框数据
     setSeniorSelectedList();
-    isSearch = false;
 }
 
 /**
@@ -766,6 +772,7 @@ function edit(item) {
  * 提交功能
  */
 function submit(item) {
+    initSubmitFName(submitProductionPlan.name);
     var state = $(item).parent().prev().text();
     if (state == '待审批') {
         productionPlanId = getProductionPlanId(item);
@@ -778,6 +785,31 @@ function submit(item) {
 }
 
 function submit1(id) {
+    publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
+    // $.ajax({
+    //     type: "POST",
+    //     url: "submitProductionPlan",
+    //     async: false,
+    //     data: {
+    //         id: id
+    //     },
+    //     dataType: "json",
+    //     success: function (result) {
+    //         if (result.status == "success") {
+    //             alert("提交成功！");
+    //             window.location.reload();
+    //         } else {
+    //             alert(result.message);
+    //         }
+    //     },
+    //     error: function (result) {
+    //         console.log(result);
+    //         alert("服务器异常!");
+    //     }
+    // });
+}
+
+function submitProductionPlan(id) {
     $.ajax({
         type: "POST",
         url: "submitProductionPlan",
@@ -800,46 +832,76 @@ function submit1(id) {
         }
     });
 }
-
 /**
  * 审批
  */
 function examination(item) {
-    var state = $(item).parent().prev().text();
-    productionPlanId = getProductionPlanId(item);
-    if (state == '审批中' || state == "已驳回" || state == "审批通过" ) {
-        $.ajax({
-            type: "POST",                            // 方法类型
-            url: "getProductionPlan",                 // url
-            async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
-            data: {
-                id: productionPlanId
-            },
-            dataType: "json",
-            success: function (result) {
-                if (result.data != undefined || result.status == "success" || result.data != null) {
-                    var data = eval(result.data);
-                    $("#advice").val(data.advice);
-                    $('#examinationModal').modal('show');//手动触发模态框弹出
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常!");
-            }
-        });
-    } else if (state == "新建" || state == "待审批") {
-        alert("请提交后再进行审批操作！");
-    } else {
-        alert("单据不可审批！");
-    }
+    // var state = $(item).parent().prev().text();
+    // productionPlanId = getProductionPlanId(item);
+    // if (state == '审批中' || state == "已驳回" || state == "审批通过" ) {
+    //     $.ajax({
+    //         type: "POST",                            // 方法类型
+    //         url: "getProductionPlan",                 // url
+    //         async: false,                           // 同步：意思是当有返回值以后才会进行后面的js程序
+    //         data: {
+    //             id: productionPlanId
+    //         },
+    //         dataType: "json",
+    //         success: function (result) {
+    //             if (result.data != undefined || result.status == "success" || result.data != null) {
+    //                 var data = eval(result.data);
+    //                 $("#advice").val(data.advice);
+    //                 $('#examinationModal').modal('show');//手动触发模态框弹出
+    //             } else {
+    //                 alert(result.message);
+    //             }
+    //         },
+    //         error: function (result) {
+    //             console.log(result);
+    //             alert("服务器异常!");
+    //         }
+    //     });
+    // } else if (state == "新建" || state == "待审批") {
+    //     alert("请提交后再进行审批操作！");
+    // } else {
+    //     alert("单据不可审批！");
+    // }
+    $("#approval").modal('show')
 }
 
-function approval() {
-    $('#approvalForm2').modal('show');
-    $("#passContent").val($("#advice").val());
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(submitProductionPlan.name);
+    initApprovalFName(approval1.name);
+    initBakcFName(reject1.name);
+    var id=$(item).parent().parent().children("td").eq(1).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
 }
 
 function reject() {
@@ -851,12 +913,12 @@ function reject() {
  * 审批通过
  *
  * */
-function approval1() {
+function approval1(id) {
     console.log($("#advice").val());
     console.log($("#passContent").val());
     var advice = $("#passContent").val();
     var productionPlan = {};
-    productionPlan.id = productionPlanId;
+    productionPlan.id = id;
     productionPlan.advice = advice;
     $.ajax({
         type: "POST",                            // 方法类型
@@ -871,7 +933,8 @@ function approval1() {
                 var data = eval(result);
                 if (data.status == "success") {
                     alert(data.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(data.message);
                 }
@@ -888,10 +951,10 @@ function approval1() {
 /**
  * 审批驳回
  * */
-function reject1() {
+function reject1(id) {
     var advice = $("#backContent").val();
     var productionPlan = {};
-    productionPlan.id = productionPlanId;
+    productionPlan.id = id;
     productionPlan.advice = advice;
     $.ajax({
         type: "POST",                            // 方法类型
@@ -905,8 +968,8 @@ function reject1() {
             if (result != undefined) {
                 var data = eval(result);
                 if (data.status == "success") {
-                    alert(data.message);
-                    window.location.reload();
+                    // alert(data.message);
+                    // window.location.reload();
                 } else {
                     alert(data.message);
                 }
@@ -939,7 +1002,8 @@ function invalid(item) {
                 success: function (result) {
                     if (result.status == "success") {
                         alert("作废成功！");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     } else {
                         alert(result.message);
                     }
@@ -979,7 +1043,8 @@ function delete1(item) {
                 success: function (result) {
                     if (result.status == "success") {
                         alert("删除成功！");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     } else {
                         alert(result.message);
                     }
@@ -1019,7 +1084,8 @@ function confirm1(item) {
                 success: function (result) {
                     if (result.status == "success") {
                         alert("确认成功！");
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
                     } else {
                         alert(result.message);
                     }
@@ -1138,7 +1204,9 @@ function save() {
                     var data = eval(result);
                     if (data.status == "success") {
                         alert(data.message);
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
+                        $("#addModal").modal("hide");  // 关闭打开的模态框
                     } else {
                         alert(data.message);
                     }
@@ -1165,7 +1233,9 @@ function save() {
                     var data = eval(result);
                     if (data.status == "success") {
                         alert(data.message);
-                        window.location.reload();
+                        $("#pageNumber").val(currentPage);   // 设置当前页页数
+                        inputSwitchPage();  // 跳转当前页
+                        $("#addModal").modal("hide");  // 关闭打开的模态框
                     } else {
                         alert(data.message);
                     }

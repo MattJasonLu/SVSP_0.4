@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdlink.mapper.produce.ApprovalManageMapper">
+
+    <resultMap id="ApprovalProcessRM" type="ApprovalProcess" autoMapping="true">
+        <id column="id" property="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="creationDate" column="creation_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <collection property="approvalNodeList" select="getItems" column="id"
+                    ofType="com.jdlink.domain.Approval.ApprovalProcess"
+                    javaType="ArrayList"/>
+    </resultMap>
+
+    <resultMap id="ApprovalNodeRM" type="ApprovalNode" autoMapping="true">
+        <id column="id" property="id"/>
+        <result property="approvalProcessId" column="approval_process_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="approvalPId" column="approval_pid"/>
+        <result property="approvalDate" column="approval_date"/>
+        <result property="approvalState" column="approval_state"/>
+        <result property="approvalAdvice" column="approval_advice"/>
+        <result property="userName" column="user_name"/>
+    </resultMap>
+
+    <resultMap id="OrganizationRM" type="Organization" autoMapping="true">
+        <id column="id" property="id"/>
+        <result property="pId" column="approval_process_id"/>
+    </resultMap>
+
+
+    <!--根据审批流ID获取审批流节点数据-->
+    <select id="getItems" parameterType="int" resultMap="ApprovalNodeRM">
+        select  * from t_approval_node_model where approval_process_id = #{id};
+    </select>
+
+    <select id="search" parameterType="ApprovalProcess" resultMap="ApprovalProcessRM">
+        select * from t_approval_process_model
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or type like "%"#{keywords}"%"
+                or creator like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="type != null and type != ''">
+                and type like "%"#{type}"%"
+            </if>
+            <if test="creator != null and creator != ''">
+                and creator like "%"#{creator}"%"
+            </if>
+        </where>
+        order by id ASC
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <select id="searchTotal" parameterType="ApprovalProcess" resultType="int">
+        select count(*) from t_approval_process_model
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or type like "%"#{keywords}"%"
+                or creator like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="type != null and type != ''">
+                and type like "%"#{type}"%"
+            </if>
+            <if test="creator != null and creator != ''">
+                and creator like "%"#{creator}"%"
+            </if>
+        </where>
+    </select>
+
+
+    <!--审批流高级查询-->
+    <select id="searchApprovalProcessFlow" parameterType="ApprovalProcess" resultMap="ApprovalProcessFlow">
+        select * from t_approval_process
+        <where>
+            <if test="keywords != null and keywords != ''">
+                or id like "%"#{keywords}"%"
+                or type like "%"#{keywords}"%"
+                or creator like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%m-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y-%c-%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%m%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y%c%e') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%m.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%d') like "%"#{keywords}"%"
+                or DATE_FORMAT(creation_date,'%Y.%c.%e') like "%"#{keywords}"%"
+            </if>
+            <if test="id != null and id != ''">
+                and id like "%"#{id}"%"
+            </if>
+            <if test="type != null and type != ''">
+                and type like "%"#{type}"%"
+            </if>
+            <if test="creator != null and creator != ''">
+                and creator like "%"#{creator}"%"
+            </if>
+        </where>
+        order by id ASC
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </select>
+
+    <!--根据点单号查询审批流(模板)对象-->
+    <select id="getApprovalProcessByOrderId" parameterType="String" resultMap="ApprovalProcessFlow">
+        select * from t_approval_process where order_id=#{orderId};
+    </select>
+
+    <!--根据审批流主键和角色编号查询节点对象-->
+    <select id="getNodeByIdAndRoleId" resultMap="ApprovalNodeRM">
+        select * from t_approval_node where id=#{0} and role_id=#{1};
+    </select>
+
+    <!--根据节点编号更新节点状态-->
+    <update id="updateApprovalById">
+        update t_approval_node set approval_state=#{1},approval_date=#{4},approval_advice=#{2},user_name=#{3} where id=#{0};
+    </update>
+
+    <update id="updateApprovalProcessById" parameterType="ApprovalProcess">
+        update t_approval_process_model set type=#{type},modify_date=#{modifyDate},modifier=#{modifier} where id=#{id};
+    </update>
+
+    <!--根据审批流ID删除对应url-->
+    <update id="deleteUrlByApprovalProcessId" parameterType="int">
+        update t_approval_url set url=null where approval_process_id=#{id};
+    </update>
+
+    <!--获取非空的审批页面链接数据-->
+    <select id="getUrlList" resultMap="OrganizationRM">
+        select * from t_approval_url where url is not null;
+    </select>
+
+    <!--根据ID获取审批流模板-->
+    <select id="getApprovalProcessModelById" parameterType="int" resultMap="ApprovalProcessRM">
+        select * from t_approval_process_model where id=#{id};
+    </select>
+
+    <!--根据角色ID获取获取审批中的审批流数据-->
+    <select id="getOrderIdAndUrlByRoleId" parameterType="ApprovalProcess" resultMap="ApprovalProcessFlow">
+
+    <if test="approvalNodeList.size()>0">
+        <if test="approvalNodeList[0].roleId!=null and approvalNodeList[0].roleId!=''">
+            select a.id,a.order_id,a.url,b.name as urlName,c.approval_state as type from t_approval_process a join t_approval_url b on a.url=b.url join t_approval_node c on(a.id=c.approval_process_id and role_id=#{approvalNodeList[0].roleId}) where a.id in
+            (select approval_process_id from t_approval_node where role_id=#{approvalNodeList[0].roleId} and approval_state in(2,6,7)) order  by a.creation_date desc
+        </if>
+        <if test="page.start != null and page.count != null">
+            limit #{page.start}, #{page.count}
+        </if>
+    </if>
+
+
+    </select>
+
+    <!--根据角色ID获取获取审批中的审批流数据查询总数-->
+    <select id="getOrderIdAndUrlByRoleIdCount" parameterType="ApprovalProcess" resultType="int">
+
+        <if test="approvalNodeList.size()>0">
+            <if test="approvalNodeList[0].roleId!=null and approvalNodeList[0].roleId!=''">
+                select count(*) from t_approval_process a join t_approval_url b on a.url=b.url join t_approval_node c on(a.id=c.approval_process_id and role_id=#{approvalNodeList[0].roleId}) where a.id in
+                (select approval_process_id from t_approval_node where role_id=#{approvalNodeList[0].roleId} and approval_state in(2,6,7))
+
+            </if>
+
+        </if>
+
+
+    </select>
+
+    <insert id="addApprovalProcess" parameterType="ApprovalProcess">
+        insert into t_approval_process_model (id,type, creation_date, modify_date, creator, modifier)
+        values
+        (#{id},#{type},NOW(),NOW(),#{creator},#{modifier});
+    </insert>
+
+    <insert id="addApprovalNode" parameterType="ApprovalNode">
+        insert into t_approval_node_model (id,approval_process_id,role_id,approval_pid,approval_date,approval_state,approval_advice,user_name)
+        values
+        (#{id},#{approvalProcessId},#{roleId},#{approvalPId},#{approvalDate},#{approvalState},#{approvalAdvice},#{userName})
+    </insert>
+
+    <!--新增审批流模板绑定页面链接-->
+    <insert id="addApprovalProcessModelUrl" parameterType="ApprovalProcess">
+        <if test="urlList != null and urlList.size() > 0">
+            <foreach collection="urlList" index="index" item="item">
+                update t_approval_url set approval_process_id=#{id},modifier=#{modifier},modify_date=NOW() where url=#{item};
+            </foreach>
+        </if>
+    </insert>
+
+    <!--根据审批流ID删除流程节点-->
+    <delete id="deleteModelNotesByApprovalProcessId" parameterType="int">
+        delete from t_approval_node_model where approval_process_id=#{id};
+    </delete>
+
+    <!--根据审批流ID删除审批流-->
+    <delete id="deleteModelProcessByApprovalProcessId" parameterType="int">
+        delete from t_approval_process_model where id=#{id};
+    </delete>
+
+    <!--根据url获取相应审批流对象-->
+   <select id="getModelProcessByUrl" parameterType="String" resultMap="ApprovalProcessRM">
+       select * from t_approval_process_model where id=(select approval_process_id from t_approval_url where url=#{url});
+   </select>
+
+    <!--添加审批流-->
+    <insert id="addApprovalFlow" parameterType="ApprovalProcess">
+        insert into t_approval_process (order_id, url, creation_date, modify_date, creator, modifier, type) values
+        (#{orderId},#{url},NOW(),NOW(),#{creator},#{modifier},#{type});
+    </insert>
+
+    <!--根据创建时间拿出最新的审批流对象-->
+    <resultMap id="ApprovalProcessFlow" type="ApprovalProcess">
+        <id column="id" property="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="url" column="url"/>
+        <result property="creationDate" column="creation_date"/>
+        <result property="modifyDate" column="modify_date"/>
+        <collection property="approvalNodeList" select="getApprovalNodeList" column="id"
+                    ofType="com.jdlink.domain.Approval.ApprovalProcess"
+                    javaType="ArrayList"/>
+    </resultMap>
+
+    <!--<select id="getUrlName" resultType="ApprovalUrl">-->
+      <!--select * from-->
+    <!--</select>-->
+
+    <resultMap id="ApprovalNodeListRM" type="ApprovalNode">
+        <id column="id" property="id"/>
+        <result property="approvalProcessId" column="approval_process_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="approvalPId" column="approval_pid"/>
+        <result property="approvalDate" column="approval_date"/>
+        <result property="approvalState" column="approval_state"/>
+        <result property="approvalAdvice" column="approval_advice"/>
+        <result property="userName" column="user_name"/>
+    </resultMap>
+
+    <select id="getApprovalNodeList" resultMap="ApprovalNodeListRM">
+         select  * from t_approval_node where approval_process_id = #{id};
+    </select>
+
+    <select id="getNewestApprovalProcessByCreateTime" resultMap="ApprovalProcessFlow">
+      select * from t_approval_process order by creation_date desc limit 0,1;
+    </select>
+
+    <!--添加审批流节点-->
+    <insert id="updateApprovalNode" parameterType="ApprovalNode">
+        insert into t_approval_node (id, approval_process_id, role_id, approval_pid, approval_date, approval_state, approval_advice, user_name) values
+        (#{id},#{approvalProcessId},#{roleId},#{approvalPId},#{approvalDate},3,#{approvalAdvice},#{userName});
+    </insert>
+
+    <!--寻找发起节点-->
+    <select id="getApprovalNodeByNullApprovalPId" parameterType="Integer" resultMap="ApprovalNodeListRM">
+select * from t_approval_node where  role_id=#{1}  and approval_process_id=#{0};
+    </select>
+
+  <!--根据订单号和角色编号获取审批节点-->
+    <select id="getApprovalNodeByOrderIdAndRoleId" resultMap="ApprovalNodeListRM">
+        select * from t_approval_node where approval_process_id=(select id from t_approval_process where order_id=#{0}) and role_id=#{1};
+    </select>
+
+
+    <!--根据父节点主键和审批流主键获取审批节点-->
+    <select id="getApprovalNodeByPNodeIdAndApprovalProcessId" resultMap="ApprovalNodeListRM">
+        select * from t_approval_node where  approval_process_id=#{0} and approval_pid=#{1};
+    </select>
+    
+    <!--寻找最上级节点根据订单号和角色编号-->
+    <select id="selectSupremeNodeByOrderId" parameterType="String" resultMap="ApprovalNodeListRM">
+  select * from t_approval_node where length(approval_pid)=0 or approval_pid is null  and  approval_process_id=(select t_approval_process.id from t_approval_process where order_id=#{orderId})
+    </select>
+
+    <!--根据审批节点主键获取审批节点-->
+    <select id="getApprovalNodeById" parameterType="String" resultMap="ApprovalNodeListRM">
+        select * from t_approval_node where id=#{id};
+    </select>
+
+    <!--根据订单号查询审批流对象-->
+    <select id="getApprovalProcessFlowByOrderId" parameterType="String" resultMap="ApprovalProcessFlow">
+        select * from t_approval_process where order_id=#{orderId}
+    </select>
+
+</mapper>

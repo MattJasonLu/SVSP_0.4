@@ -40,12 +40,12 @@ function loadChartList() {
  * 加载表图
  */
 function loadData() {
-    drawLayer02Label($("#layer02_01 canvas").get(0), "危废入库数", 60, 200);  // 第三参数：，第四参数：折线长度
-    drawLayer02Label($("#layer02_02 canvas").get(0), "辅料入库数", 60, 200);
-    drawLayer02Label($("#layer02_03 canvas").get(0), "次生入库数", 60, 200);
-    drawLayer02Label($("#layer02_04 canvas").get(0), "危废出库数", 30, 200);
-    drawLayer02Label($("#layer02_05 canvas").get(0), "辅料出库数", 30, 200);
-    drawLayer02Label($("#layer02_06 canvas").get(0), "次生出库数", 30, 200);
+    drawLayer02Label($("#layer02_01 canvas").get(0), "危废入库数", 60, 130);  // 第三参数：，第四参数：折线长度
+    drawLayer02Label($("#layer02_02 canvas").get(0), "辅料入库数", 60, 130);
+    drawLayer02Label($("#layer02_03 canvas").get(0), "次生入库数", 60, 130);
+    drawLayer02Label($("#layer02_04 canvas").get(0), "危废出库数", 60, 130);
+    drawLayer02Label($("#layer02_05 canvas").get(0), "辅料出库数", 60, 130);
+    drawLayer02Label($("#layer02_06 canvas").get(0), "次生出库数", 60, 130);
     setMonthOutAndInData();    // 设置月份出入库数据
 
     renderLegend();
@@ -284,9 +284,9 @@ function renderLayer04Right(myChart, list) {
                 ]
             },
             grid: {
-                left: '3%',
+                left: '5%',
                 right: '16%',
-                bottom: '3%',
+                bottom: '10%',
                 top: '3%',
                 containLabel: true
             },
@@ -397,7 +397,8 @@ function setBarConfig(myChart) {
         title: {
             text: '危废合同签约量条形图',
             textStyle: {                 //---主标题内容样式
-                color: 'black'
+                color: 'black',
+                size: 7
             },
             subtext: '',          //---副标题内容样式
             subtextStyle: {
@@ -450,10 +451,10 @@ function setBarConfig(myChart) {
                 //设置轴线的属性
                 axisLine: {
                     lineStyle: {
-                        color: 'black',
+                        color: 'black'
                     }
                 },
-                data: xData,
+                data: xData
             }
         ],
         yAxis: [
@@ -497,7 +498,7 @@ function setBarConfig(myChart) {
                         position: 'top',
                         textStyle: {
                             color: '#5475c7',
-                            fontSize: 20,
+                            fontSize: 14
                         }
                     }
                 }

@@ -1,7 +1,7 @@
 package com.jdlink.domain;
 
 /**
- * Created by matt on 2018/7/8.
+ * Created by matt on 2018/7/8.contracttemplate
  */
 public enum DocumentType {
     Contract("合同", 1),

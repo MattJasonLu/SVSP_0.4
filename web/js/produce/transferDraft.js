@@ -289,6 +289,7 @@ function inputSwitchPage() {
  * 分页 获取首页内容
  * */
 function loadPageList() {
+    loadNavigationList();   // 动态菜单加载
     $("#current").find("a").text("当前页：1");
     $("#previous").addClass("disabled");
     $("#firstPage").addClass("disabled");
@@ -299,28 +300,35 @@ function loadPageList() {
     page.count = countValue();                                 // 可选
     page.pageNumber = pageNumber;
     page.start = (pageNumber - 1) * page.count;
-    $.ajax({
-        type: "POST",                       // 方法类型
-        url: "loadPageTransferDraftList",   // url
-        async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
-        data: JSON.stringify(page),
-        dataType: "json",
-        contentType: 'application/json;charset=utf-8',
-        success: function (result) {
-            if (result !== undefined && result.status === "success") {
-                console.log(result);
-                setPageClone(result.data);
-                setPageCloneAfter(pageNumber);        // 重新设置页码
-            } else {
-                console.log("fail: " + result);
+    if(getApprovalId()!=undefined){ //存在
+        $.trim($("#searchContent").val(getApprovalId()));
+        searchData();
+        window.localStorage.removeItem('approvalId');
+    }else {
+        $.ajax({
+            type: "POST",                       // 方法类型
+            url: "loadPageTransferDraftList",   // url
+            async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
+            data: JSON.stringify(page),
+            dataType: "json",
+            contentType: 'application/json;charset=utf-8',
+            success: function (result) {
+                if (result !== undefined && result.status === "success") {
+                    console.log(result);
+                    setPageClone(result.data);
+                    setPageCloneAfter(pageNumber);        // 重新设置页码
+                } else {
+                    console.log("fail: " + result);
+                }
+            },
+            error: function (result) {
+                console.log("error: " + result);
+                console.log("失败");
             }
-        },
-        error: function (result) {
-            console.log("error: " + result);
-            console.log("失败");
-        }
-    });
-    isSearch = false;
+        });
+        isSearch = false;
+    }
+
     getCheckState();
 }
 
@@ -416,6 +424,7 @@ function searchData() {
             if (result !== undefined && result.status === "success") {
                 console.log(result);
                 setPageClone(result.data);
+                setPageCloneAfter(pageNumber);        // 重新设置页码
             } else {
                 alert(result.message);
             }
@@ -617,7 +626,8 @@ function setSignIn(e) {
                 if (result != undefined && result.status == "success") {
                     console.log(result);
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -649,7 +659,8 @@ function setInvalid(e) {    //已作废
                 if (result !== undefined && result.status === "success") {
                     console.log(result);
                     alert(result.message);
-                    window.location.reload();
+                    $("#pageNumber").val(currentPage);   // 设置当前页页数
+                    inputSwitchPage();  // 跳转当前页
                 } else {
                     alert(result.message);
                 }
@@ -661,39 +672,151 @@ function setInvalid(e) {    //已作废
         });
     }
 }
+/*审批*/
+function setApproval(id) {
+    $.ajax({
+        type: "POST",
+        url: "setTransferDraftToApproval",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+}
+/*驳回*/
+function setBack(id) {
+    $.ajax({
+        type: "POST",
+        url: "setTransferDraftToBack",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                // console.log(result);
+                // alert(result.message);
+                // window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+}
+
+/**
+ * 新审批
+ */
+function approval(item) {
+    initSubmitFName(setTransferDraftToExamine.name);
+    initApprovalFName(setApproval.name);
+    initBakcFName(setBack.name);
+    var id=$(item).parent().parent().children("td").eq(4).html();
+    $('#ApprovalOrderId').text(id);
+    $.ajax({
+        type: "POST",
+        url: "getAllChildNode",
+        async: false,                      // 同步：意思是当有返回值以后才会进行后面的js程序
+        dataType: "json",
+        data: {'orderId': id},
+        success:function (result) {
+            if (result != undefined && result.status == "success"){
+                console.log(result);
+                if(result.data!=null){
+                    setApprovalModal(result.data);
+                    $("#approval").modal('show');
+                }
+
+            }
+            else {
+                alert('未提交，无法审批！')
+            }
+        },
+        error:function (result) {
+            alert("服务器异常!")
+        }
+    });
+
+}
+
+
 
 /**
  * 提交转移联单
  */
 function setSubmit(e) {    //已提交
+    initSubmitFName(setTransferDraftToExamine.name);
     var r = confirm("确认提交该联单吗？");
     if (r) {
-        var id = getIdByMenu(e);
-        $.ajax({
-            type: "POST",
-            url: "setTransferDraftToExamine",
-            async: false,
-            dataType: "json",
-            data: {
-                id: id
-            },
-            success: function (result) {
-                if (result !== undefined && result.status === "success") {
-                    console.log(result);
-                    alert(result.message);
-                    window.location.reload();
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function (result) {
-                console.log(result);
-                alert("服务器异常");
-            }
-        });
+        var id = $(e).parent().parent().children('td').eq(4).html();
+        publicSubmit(id,getUrl(),getCurrentUserData().name,getCurrentUserData().role.id)
+        // $.ajax({
+        //     type: "POST",
+        //     url: "setTransferDraftToExamine",
+        //     async: false,
+        //     dataType: "json",
+        //     data: {
+        //         id: id
+        //     },
+        //     success: function (result) {
+        //         if (result !== undefined && result.status === "success") {
+        //             console.log(result);
+        //             // alert(result.message);
+        //             // window.location.reload();
+        //         } else {
+        //             alert(result.message);
+        //         }
+        //     },
+        //     error: function (result) {
+        //         console.log(result);
+        //         alert("服务器异常");
+        //     }
+        // });
     }
 }
-
+function setTransferDraftToExamine(id) {
+    $.ajax({
+        type: "POST",
+        url: "setTransferDraftToExamine",
+        async: false,
+        dataType: "json",
+        data: {
+            id: id
+        },
+        success: function (result) {
+            if (result !== undefined && result.status === "success") {
+                console.log(result);
+                alert(result.message);
+                window.location.reload();
+            } else {
+                alert(result.message);
+            }
+        },
+        error: function (result) {
+            console.log(result);
+            alert("服务器异常");
+        }
+    });
+}
 /**
  * 修改数据
  * @param e
@@ -708,9 +831,10 @@ function adjustData(e) {
  * 根据编号来获取对应的联单信息
  */
 function loadData() {
+    loadNavigationList();   // 动态菜单加载
     // 设置下拉框数据
     getSelectedInfo();
-
+    loadNavigationList();   // 动态菜单加载
     var id = localStorage.transferDraftId;
     if (id != null) {
         $.ajax({
@@ -745,13 +869,13 @@ function loadData() {
                     }
                     if (data.wastes != null) {
                         $("#wastesName").val(data.wastes.name);
-                        $("#wastesPrepareTransferCount").val(data.wastes.prepareTransferCount);
+                        $("#wastesPrepareTransferCount").val(data.wastes.prepareTransferCount.toFixed(3));
                         $("#wastesCharacter").val(data.wastes.wastesCharacter);
                         if (data.wastes.handleCategoryItem != null)
                         $("#wastesCategory").val(data.wastes.handleCategoryItem.dataDictionaryItemId);
-                        $("#wastesTransferCount").val(data.wastes.transferCount);
+                        $("#wastesTransferCount").val(data.wastes.transferCount.toFixed(3));
                         $("#wastesCode").val(data.wastes.wastesId);
-                        $("#wastesSignCount").val(data.wastes.signCount);
+                        $("#wastesSignCount").val(data.wastes.signCount.toFixed(3));
                         if (data.wastes.formTypeItem != null)
                         $("#wastesFormType").val(data.wastes.formTypeItem.dataDictionaryItemId);
                         if (data.wastes.packageTypeItem != null)

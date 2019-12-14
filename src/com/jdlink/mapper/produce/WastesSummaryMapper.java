@@ -14,6 +14,8 @@ public interface WastesSummaryMapper {
       */
      List<WastesSummary> get(WastesSummary wastesSummary);
 
+     List<WastesSummary> getWarningWastesInfo();
+
      /**
       * 计算危废汇总信息的数量
       * @param wastesSummary 危废汇总对象

@@ -48,14 +48,15 @@
             </div><!--/.nav-collapse -->
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" title="提醒"><span class="glyphicon glyphicon-bell"></span></a></li>
-            <li><a href="#" title="事项"><span class="glyphicon glyphicon-envelope"></span></a></li>
+            <li><a href="todo.html" title="事项">
+                <span class="glyphicon glyphicon-bell"></span>
+            </a>
+            </li>
+            <li><a href="#" title="邮件" onclick="goToEmail()"><span class="glyphicon glyphicon-envelope"></span></a></li>
             <li class="dropdown">
                 <a href="#" title="我的" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="personalInformation.html">个人信息</a></li>
-                    <li><a href="#">待办事项</a></li>
-                    <li><a href="#" onclick="showLog();">登录日志</a></li>
                     <li><a href="admin.html">注销</a></li>
                 </ul>
             </li>
@@ -117,7 +118,7 @@
                         <ul class="dateList"></ul>
                     </div>
                 </div>
-                <div style="width:25%;height:380px;border:#ccc solid 1px;margin-top: 370px;margin-left: 71.2%; overflow-y:scroll; ">
+                <div id="dataList" style="width:25%;height:380px;border:#ccc solid 1px;margin-top: 370px;margin-left: 71.2%; overflow:auto; ">
                     <div id="cloneContent">
                         <p style="font-size: 15px;">
                             <a href="#">
@@ -221,9 +222,6 @@
     </div>
 </body>
 <script type="text/javascript">
-    function aa() {
-        alert("123");
-    }
     function dis() {
         $(".asd").removeAttr("onclick");
         document.getElementById("glyphicon").style.color="#9d9d9d";
@@ -231,113 +229,15 @@
     $("#glyphicon").hover(function () {
         document.getElementById("glyphicon").style.cursor="wait";
     });
+
     //创建和初始化地图函数：
-    function initMap(){
-        createMap();//创建地图
+    function initMap(obj){
+        createMap(obj);//创建地图
         setMapEvent();//设置地图事件
         addMapControl();//向地图添加控件
     }
 
-    //创建地图函数：
-    function createMap(){
-        var map = new BMap.Map("dituContent");//在百度地图容器中创建一个地图
-        //标注点一
-        var point = new BMap.Point(119.972394,31.979135);//定义一个中心点坐标
-        map.centerAndZoom(point,11);//设定地图的中心点和坐标并将地图显示在地图容器中
-        var marker = new BMap.Marker(point);//新建标注点
-        // function addMarker(point,index){                                             //该段更改标注图标
-        //     var myIcon = new BMap.Icon("image/mark.png", new BMap.Size(23,25),{      //设置图标大小
-        //         anchor:new BMap.Size(10,25),
-        //         imageOffset: new BMap.Size(0,0 - index * 25)
-        // });
-        // var marker = new BMap.Marker(point,{icon:myIcon});                           //设置图标图片
-        map.addOverlay(marker);//向地图中添加标记点
-        // marker.enableDragging();//允许标注拖拽功能
-        // marker.addEventListener("dragend",function (e) {
-        //     alert("当前位置: " + e.point.lng + "," + e.point.lat) //alert出当前拖拽位置的经纬度
-        // });
-        var opts = {
-            width : 250,       //信息框宽度
-            height : 150,      //信息框高度
-            title : "企业信息"   //信息框标题
-        };
-        var infoWindow = new BMap.InfoWindow("北控安耐得环保科技发展常州有限公司(春江镇滨江经济开发区滨江三路1号)",opts); //创建信息窗口对象
-        marker.addEventListener("click", function(){
-            map.openInfoWindow(infoWindow,point); //开启信息窗口
-        });
-        //标注点二
-        var point1 = new BMap.Point(119.987417,31.843014);//定义一个中心点坐标
-        var marker1 = new BMap.Marker(point1);//新建标注点
-        map.addOverlay(marker1);//向地图中添加标记点
-        map.centerAndZoom(point1,11);//设定地图的中心点和坐标并将地图显示在地图容器中
-        var opts1 = {
-            width : 250,       //信息框宽度
-            height : 150,      //信息框高度
-            title : "企业信息"   //信息框标题
-        };
-        var infoWindow1 = new BMap.InfoWindow("<p id='info' style='display: inline'>常州上通汽车销售服务有限公司</p>(<a style='display: inline' onclick='viewStock()'>详情</a>)"+
-            "<p>联系人：鲍丹</p>"+
-            "<p>库容：50T</p>"+
-            "<p>联系电话：0519-69665550</p>",opts1); //创建信息窗口对象
-        marker1.addEventListener("click", function(){
-            map.openInfoWindow(infoWindow1,point1); //开启信息窗口
-        });
-        //标注点三
-        var point2 = new BMap.Point(120.010365,31.723407);//定义一个中心点坐标
-        var marker2 = new BMap.Marker(point2);//新建标注点
-        map.addOverlay(marker2);//向地图中添加标记点
-        map.centerAndZoom(point2,11);//设定地图的中心点和坐标并将地图显示在地图容器中
-        var opts2 = {
-            width : 250,       //信息框宽度
-            height : 150,      //信息框高度
-            title : "企业信息"   //信息框标题
-        };
-        var infoWindow2 = new BMap.InfoWindow("<p id='info' style='display: inline'>常州市华荣友佳纺织染整有限公司</p>(<a style='display: inline' onclick='viewStock()'>详情</a>)"+
-            "<p>联系人：朱华雄</p>"+
-            "<p>库容：50T</p>"+
-            "<p>联系电话：0519-8816828</p>",opts2); //创建信息窗口对象
-        marker2.addEventListener("click", function(){
-            map.openInfoWindow(infoWindow2,point2); //开启信息窗口
-        });
-        // marker1.enableDragging();//允许标注拖拽功能
-        // marker1.addEventListener("dragend",function (e) {
-        //     alert("当前位置: " + e.point.lng + "," + e.point.lat) //alert出当前拖拽位置的经纬度
-        // });
-        //进入全景图标位置
-        var stCtrl = new BMap.PanoramaControl();
-        stCtrl.setOffset(new BMap.Size(20,20)); //设置全景地图的级别及中心点
-        map.addControl(stCtrl);    //向地图中添加该控件
-        //浏览器定位
-        // var geolocation = new BMap.Geolocation();
-        // geolocation.getCurrentPosition(function(r){
-        //     if(this.getStatus() == BMAP_STATUS_SUCCESS){
-        //         var mk = new BMap.Marker(r.point);             //标注点经纬度
-        //         map.addOverlay(mk);                            //添加控件
-        //         map.panTo(r.point);                            //确定中心坐标
-        //         alert('您的位置：'+r.point.lng+','+r.point.lat); //显示当前浏览器所处位置
-        //     }
-        //     else {
-        //         alert('failed'+this.getStatus());
-        //     }
-        // });
-        //ip定位
-        // function myFun(result){
-        //     var cityName = result.name; //城市名称
-        //     map.setCenter(cityName);    //设置城市中心
-        //     alert("当前定位城市:"+cityName);
-        // }
-        // var myCity = new BMap.LocalCity();
-        // myCity.get(myFun);
-        // //定位SDK辅助定位
-        // function myFun(result){
-        //     var cityName = result.name;
-        //     map.setCenter(cityName);
-        //     alert("当前定位城市:"+cityName);
-        // }
-        // var myCity = new BMap.LocalCity();
-        // myCity.get(myFun);
-        window.map = map;//将map变量存储在全局
-    }
+
     //载入全景信息
     window.onload = function () {
         var panorama = new BMap.Panorama("panorama");
@@ -348,6 +248,8 @@
         loadNavigationList();
         // update 2018年12月5日 by ljc ： 增加客户显示
         loadClientData();
+        // update by whx when 2019.4.18 根据角色判断权限是否显示预警信息
+        showWarningInfoByRole();
     };
     //地图事件设置函数：
     function setMapEvent(){
@@ -375,7 +277,7 @@
     }
 
 
-    initMap();//创建和初始化地图
+    // initMap();//创建和初始化地图
     $(function() {
 
         //必要的数据
@@ -458,18 +360,15 @@
         $('#back').hide();
         //完善隐藏
         $('#perfect').hide();
-        //申报编号
+        //申报公司
         var companyName = $("#info").text();
-        console.log("1");
-        var client = {};
-        client.companyName = companyName;
         $.ajax({
             type: "POST",                       // 方法类型
             url: "getStockByName",                   // url
             async: false,                       // 同步：意思是当有返回值以后才会进行后面的js程序
             dataType: "json",
             data: {
-                'stockName': client.companyName
+                'stockName': companyName
             },
             success: function (result) {
                 if (result != undefined && result.status == "success") {
@@ -627,6 +526,8 @@
     function telephone() {
         $("#telephone").text($("#proTelephone").text())
     }
+
+
 </script>
 <style>
     * {margin: 0;padding: 0}
